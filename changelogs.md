@@ -104,3 +104,4 @@
 - Added `api_docs.md` to document all available API endpoints.
 - Added pagination to the `/api/users` endpoint.
 - Added a user profile page for updating personal data and managing API keys.
+- Added the initial version of the Attendance module with check-in/check-out functionality.

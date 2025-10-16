@@ -25,7 +25,23 @@ class Migration_model extends Model {
         if (!$this->is_table_exists('user_roles')) {
             $this->create_user_roles_table();
         }
+        if (!$this->is_table_exists('attendance')) {
+            $this->create_attendance_table();
+        }
         // Add other table checks here in the future
+    }
+
+    private function create_attendance_table() {
+        $sql = "CREATE TABLE attendance (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            check_in_time DATETIME NULL,
+            check_out_time DATETIME NULL,
+            `date` DATE NOT NULL,
+            `status` VARCHAR(50) NOT NULL, -- present, absent, late, on_leave
+            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+        );";
+        $this->db->exec($sql);
     }
 
     private function create_users_table() {

@@ -16,6 +16,12 @@
                   <span class="nav-main-link-name">Dashboard</span>
                 </a>
               </li>
+              <li class="nav-main-item">
+                <a class="nav-main-link" href="/sekolah/attendance">
+                  <i class="nav-main-link-icon fa fa-check-square"></i>
+                  <span class="nav-main-link-name">Attendance</span>
+                </a>
+              </li>
               <li class="nav-main-heading">Admin</li>
               <li class="nav-main-item">
                 <a class="nav-main-link" href="/sekolah/admin">
