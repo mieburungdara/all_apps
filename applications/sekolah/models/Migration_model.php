@@ -4,9 +4,7 @@ class Migration_model extends Model {
 
     public function is_table_exists($table_name) {
         $sql = "SELECT name FROM sqlite_master WHERE type='table' AND name=:table_name";
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute([':table_name' => $table_name]);
-        return $stmt->fetch() !== false;
+        return $this->db->fetch_one($sql, [':table_name' => $table_name]) !== false;
     }
 
     public function run_migrations() {

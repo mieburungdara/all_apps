@@ -91,7 +91,9 @@ class Database {
         return $this->db->exec($sql);
     }
 
-    public function prepare($sql) {
-        return $this->db->prepare($sql);
+    public function fetch_one($sql, $params = []) {
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetch();
     }
 }
