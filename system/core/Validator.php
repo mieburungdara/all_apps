@@ -69,23 +69,15 @@ class Validator {
                 $ignore_col = $params[2] ?? null;
                 $ignore_val = $params[3] ?? null;
 
-                $where = [$column => $value];
+                $where = [[$column, '=', $value]];
                 if ($ignore_col && $ignore_val) {
-                    // This is a hacky way to add a NOT EQUAL condition.
-                    // We should improve the base Model's get() method later.
-                    // For now, this will work by manually adding to the where clause.
-                    // This is not implemented yet, we will do it when we build the profile update page.
+                    $where[] = [$ignore_col, '!=', $ignore_val];
                 }
 
                 $result = $this->db->get($table, $where);
 
                 if (!empty($result)) {
-                    // If we are in an update case, we need to check if the found record is the one we are editing
-                    if ($ignore_val && $result[0][$ignore_col] == $ignore_val) {
-                        // It's the same record, so it's not a duplicate
-                    } else {
-                        $this->add_error($field, $message);
-                    }
+                    $this->add_error($field, $message);
                 }
                 break;
             case 'numeric':

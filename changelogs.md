@@ -60,3 +60,4 @@
 - Added `numeric`, `alpha`, `alpha_space`, and `alpha_numeric` rules to the `Validator`.
 - Added `valid_date` and `is_natural` rules to the `Validator`.
 - Enhanced the `is_unique` validation rule to support exceptions for record updates.
+- Enhanced `Model::get()` to support flexible where clauses with different operators.

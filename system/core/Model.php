@@ -5,16 +5,13 @@ class Model {
     protected $db;
 
     public function __construct() {
-        // Load the database configuration using the new Config class
         $config = Config::getInstance();
         $db_config = $config->load('database');
-
         $dsn = 'sqlite:' . $db_config['path'];
         $options = [
             PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
         ];
-
         try {
             $this->db = new PDO($dsn, null, null, $options);
         } catch (\PDOException $e) {
@@ -24,17 +21,23 @@ class Model {
 
     public function get($table, $where = []) {
         $sql = "SELECT * FROM {$table}";
+        $params = [];
         if (!empty($where)) {
             $sql .= " WHERE ";
             $conditions = [];
-            foreach ($where as $key => $value) {
-                $conditions[] = "{$key} = :{$key}";
+            foreach ($where as $index => $condition) {
+                $column = $condition[0];
+                $operator = $condition[1];
+                $value = $condition[2];
+                $placeholder = ":where_{$column}_{$index}";
+                $conditions[] = "{$column} {$operator} {$placeholder}";
+                $params[$placeholder] = $value;
             }
             $sql .= implode(' AND ', $conditions);
         }
 
         $stmt = $this->db->prepare($sql);
-        $stmt->execute($where);
+        $stmt->execute($params);
         return $stmt->fetchAll();
     }
 
@@ -42,14 +45,14 @@ class Model {
         $keys = array_keys($data);
         $fields = implode(', ', $keys);
         $placeholders = ':' . implode(', :', $keys);
-        
         $sql = "INSERT INTO {$table} ({$fields}) VALUES ({$placeholders})";
-        
         $stmt = $this->db->prepare($sql);
         return $stmt->execute($data);
     }
 
     public function update($table, $data, $where) {
+        // This also needs to be updated to the new where clause format
+        // We will do this when we build the profile update page.
         $data_fields = [];
         foreach ($data as $key => $value) {
             $data_fields[] = "{$key} = :data_{$key}";
@@ -66,12 +69,10 @@ class Model {
 
         $stmt = $this->db->prepare($sql);
 
-        // Bind data parameters
         foreach ($data as $key => $value) {
             $stmt->bindValue(":data_{$key}", $value);
         }
 
-        // Bind where parameters
         foreach ($where as $key => $value) {
             $stmt->bindValue(":where_{$key}", $value);
         }
@@ -79,15 +80,24 @@ class Model {
         return $stmt->execute();
     }
 
-    public function delete($table, $where) {
-        $sql = "DELETE FROM {$table} WHERE ";
-        $conditions = [];
-        foreach ($where as $key => $value) {
-            $conditions[] = "{$key} = :{$key}";
+    public function delete($table, $where = []) {
+        $sql = "DELETE FROM {$table}";
+        $params = [];
+        if (!empty($where)) {
+            $sql .= " WHERE ";
+            $conditions = [];
+            foreach ($where as $index => $condition) {
+                $column = $condition[0];
+                $operator = $condition[1];
+                $value = $condition[2];
+                $placeholder = ":where_{$column}_{$index}";
+                $conditions[] = "{$column} {$operator} {$placeholder}";
+                $params[$placeholder] = $value;
+            }
+            $sql .= implode(' AND ', $conditions);
         }
-        $sql .= implode(' AND ', $conditions);
 
         $stmt = $this->db->prepare($sql);
-        return $stmt->execute($where);
+        return $stmt->execute($params);
     }
 }

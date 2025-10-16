@@ -12,7 +12,7 @@ class Users_model extends Model {
 
     public function check_login($email, $password) {
         // Use the generic get method to find the user
-        $user = $this->get('users', ['email' => $email]);
+        $user = $this->get('users', [['email', '=', $email]]);
 
         // Check if user exists and password is correct
         if (count($user) === 1 && password_verify($password, $user[0]['password'])) {
