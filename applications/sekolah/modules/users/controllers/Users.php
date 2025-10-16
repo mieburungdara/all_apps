@@ -9,34 +9,29 @@ class Users extends Controller {
 
     // Display the registration page
     public function register() {
-        // If form is submitted
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if ($this->input->method() == 'POST') {
             $data = [
-                'nama' => $_POST['nama'],
-                'email' => $_POST['email'],
-                'password' => $_POST['password']
+                'nama' => $this->input->post('nama'),
+                'email' => $this->input->post('email'),
+                'password' => $this->input->post('password')
             ];
 
             if ($this->Users_model->register_user($data)) {
-                // Redirect to login page on success
                 header('Location: /sekolah/users/login');
                 exit();
             } else {
-                // Handle registration failure
                 echo "Registration failed!";
             }
         } else {
-            // Show the registration form
             $this->load_view('register');
         }
     }
 
     // Display the login page
     public function login() {
-        // If form is submitted
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $email = $_POST['email'];
-            $password = $_POST['password'];
+        if ($this->input->method() == 'POST') {
+            $email = $this->input->post('email');
+            $password = $this->input->post('password');
 
             $user = $this->Users_model->check_login($email, $password);
 
@@ -46,11 +41,9 @@ class Users extends Controller {
                 // For now, just show a success message.
                 // Later, we will start a session here.
             } else {
-                // Handle login failure
                 echo "Login failed! Invalid email or password.";
             }
         } else {
-            // Show the login form
             $this->load_view('login');
         }
     }

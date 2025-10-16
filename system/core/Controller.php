@@ -3,9 +3,11 @@
 class Controller {
 
     protected $module_path;
+    protected $input;
 
     public function __construct($module_path) {
         $this->module_path = $module_path;
+        $this->input = Input::getInstance();
     }
 
     public function load_view($view, $data = []) {

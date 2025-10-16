@@ -14,6 +14,7 @@
     - `core/Controller.php`: A base controller with `load_view()` and `load_model()` methods.
     - `core/Model.php`: A base model with PDO database connection logic and helper methods (`get`, `insert`, `update`, `delete`).
     - `core/Config.php`: A singleton class to handle loading configuration files.
+    - `core/Input.php`: A singleton class to securely handle user input.
 - **School Application (`applications/sekolah/`):**
     - `index.php`: Application entry point.
     - `config/database.php`: Application-specific database configuration file.
@@ -37,3 +38,4 @@
 - The Router now uses `$_SERVER['QUERY_STRING']` for more reliable routing with the new `.htaccess` setup.
 - The main portal `index.php` now uses clean URLs.
 - Updated `todo.md` with Google Login feature plan.
+- Refactored `Users` controller to use the new `Input` library.

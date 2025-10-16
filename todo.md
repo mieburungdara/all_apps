@@ -8,7 +8,7 @@ This file tracks the development roadmap for our suite of applications.
 - [ ] **Session Management:** Create a `Session` library in `system/core` to handle user login state.
 - [ ] **Authentication Layer:** Add a method in the base `Controller` to check for active sessions and protect pages.
 - [x] **Configuration Loader:** Create a `Config` class to easily load configuration files (like `database.php`).
-- [ ] **Input Library:** Create an `Input` class to securely handle `$_GET`, `$_POST`, and other user input.
+- [x] **Input Library:** Create an `Input` class to securely handle `$_GET`, `$_POST`, and other user input.
 
 ## Features & Modules
 
