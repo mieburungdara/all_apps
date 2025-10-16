@@ -61,4 +61,19 @@ class Session {
         $this->set('csrf_token', null);
         return hash_equals($session_token, $token);
     }
+
+    public function flash_input($data) {
+        $this->set('__old_input', $data);
+    }
+
+    public function get_old_input($key) {
+        $old_input = $this->get('__old_input');
+        if (isset($old_input[$key])) {
+            // Clear the old input after retrieving it
+            $value = $old_input[$key];
+            unset($_SESSION['__old_input'][$key]);
+            return $value;
+        }
+        return null;
+    }
 }

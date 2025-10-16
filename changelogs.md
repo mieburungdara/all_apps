@@ -54,3 +54,4 @@
 - Integrated a new `Validator` class into the `Input` library.
 - Refactored the user registration process to use the new validation system.
 - Enhanced `Validator` with `matches` and `unique` (database) rules.
+- Implemented 'old input' functionality to repopulate forms on validation failure.

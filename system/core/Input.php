@@ -47,4 +47,8 @@ class Input {
     public function get_errors() {
         return $this->validator->get_errors();
     }
+
+    public function old($key) {
+        return Session::getInstance()->get_old_input($key);
+    }
 }

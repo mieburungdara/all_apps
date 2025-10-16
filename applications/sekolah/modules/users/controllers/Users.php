@@ -38,6 +38,7 @@ class Users extends Controller {
             } else {
                 // Pass errors to the view
                 $data['errors'] = $this->input->get_errors();
+                $this->session->flash_input($this->input->post());
             }
         }
         
