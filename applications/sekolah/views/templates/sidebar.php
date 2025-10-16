@@ -1,3 +1,11 @@
+<?php
+// Since the sidebar is a generic template, it needs to initialize the session
+// on its own to get the user data, if it hasn't been started already.
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+$user_nama = $_SESSION['user_nama'] ?? 'Guest';
+?>
       <nav id="sidebar" aria-label="Main Navigation">
         <!-- Side Header (mini Sidebar mode) -->
         <div class="smini-visible-block">
@@ -31,11 +39,11 @@
           <div class="content-side content-side-full text-center bg-black-10">
             <div class="smini-hide">
               <img class="img-avatar" src="/assets/media/avatars/avatar15.jpg" alt="">
-              <div class="mt-2 mb-1 fw-semibold">Dr. Taylor</div>
-              <a class="text-white-50 me-1" href="javascript:void(0)">
-                <i class="fa fa-fw fa-user-md"></i>
+              <div class="mt-2 mb-1 fw-semibold"><?php echo htmlspecialchars($user_nama); ?></div>
+              <a class="text-white-50 me-1" href="#">
+                <i class="fa fa-fw fa-user-cog"></i>
               </a>
-              <a class="text-white-50 me-1" href="javascript:void(0)">
+              <a class="text-white-50 me-1" href="#">
                 <i class="fa fa-fw fa-cog"></i>
               </a>
               <a class="text-white-50" href="/sekolah/users/logout">
