@@ -7,6 +7,7 @@ class Input {
 
     private function __construct() {
         require_once SYSPATH . 'core/Validator.php';
+        require_once SYSPATH . 'core/security_helper.php';
         $this->validator = new Validator();
     }
 
@@ -19,16 +20,16 @@ class Input {
 
     public function post($key = null, $default = null) {
         if ($key === null) {
-            return filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+            return xss_clean($_POST);
         }
-        return filter_input(INPUT_POST, $key, FILTER_SANITIZE_STRING) ?? $default;
+        return isset($_POST[$key]) ? xss_clean($_POST[$key]) : $default;
     }
 
     public function get($key = null, $default = null) {
         if ($key === null) {
-            return filter_input_array(INPUT_GET, FILTER_SANITIZE_STRING);
+            return xss_clean($_GET);
         }
-        return filter_input(INPUT_GET, $key, FILTER_SANITIZE_STRING) ?? $default;
+        return isset($_GET[$key]) ? xss_clean($_GET[$key]) : $default;
     }
 
     public function method() {

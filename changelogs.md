@@ -20,6 +20,7 @@
     - `core/Log.php`: A library for writing leveled log messages to files.
     - `core/Validator.php`: A class to handle data validation rules.
     - `core/Language.php`: A library for loading language files.
+    - `core/security_helper.php`: A helper file containing security-related functions.
 - **School Application (`applications/sekolah/`):**
     - `index.php`: Application entry point.
     - `config/database.php`: Application-specific database configuration file.
@@ -81,3 +82,4 @@
 - Enhanced `Response` library with methods for setting status codes and custom headers.
 - Enhanced `Session` library with ID regeneration and improved flash message setting.
 - Implemented failsafe error and shutdown handlers in `bootstrap.php` to log early-stage fatal errors.
+- Integrated an `xss_clean` function into the `Input` library to automatically sanitize all GET and POST data.
