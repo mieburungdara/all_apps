@@ -12,22 +12,36 @@
                         <th>Check-in</th>
                         <th>Check-out</th>
                         <th>Status</th>
+                        <th class="text-center">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if (!empty($all_attendance)): ?>
-                        <?php foreach ($all_attendance as $record): ?>
+                    <?php if (!empty($all_attendance)):
+                        foreach ($all_attendance as $record):
+                        ?>
                         <tr>
                             <td><?= $record['user_name'] ?></td>
                             <td><?= date('d M Y', strtotime($record['date'])) ?></td>
                             <td><?= $record['check_in_time'] ? date('H:i:s', strtotime($record['check_in_time'])) : '-' ?></td>
                             <td><?= $record['check_out_time'] ? date('H:i:s', strtotime($record['check_out_time'])) : '-' ?></td>
                             <td><span class="badge bg-primary"><?= ucfirst($record['status']) ?></span></td>
+                            <td class="text-center">
+                                <div class="btn-group">
+                                    <a href="/sekolah/attendance/edit/<?= $record['id'] ?>" class="btn btn-sm btn-secondary" data-bs-toggle="tooltip" title="Edit">
+                                        <i class="fa fa-pencil-alt"></i>
+                                    </a>
+                                    <a href="/sekolah/attendance/delete/<?= $record['id'] ?>" class="btn btn-sm btn-secondary" onclick="return confirm('Are you sure?')" data-bs-toggle="tooltip" title="Delete">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                </div>
+                            </td>
                         </tr>
-                        <?php endforeach; ?>
-                    <?php else: ?>
+                        <?php 
+                        endforeach;
+                    else:
+                        ?>
                         <tr>
-                            <td colspan="5" class="text-center">No attendance records found.</td>
+                            <td colspan="6" class="text-center">No attendance records found.</td>
                         </tr>
                     <?php endif; ?>
                 </tbody>

@@ -106,6 +106,7 @@
 - Added a user profile page for updating personal data and managing API keys.
 - Added the initial version of the Attendance module with check-in/check-out functionality.
 - Added an admin-only page to manage and view all user attendance records.
+- Admins can now edit and delete attendance records.
 
 ### Changed
 - The user attendance page now displays a history of the user's past attendance.

@@ -40,4 +40,16 @@ class Attendance_model extends Model {
     public function get_total_all_attendance_count() {
         return $this->db->count('attendance');
     }
+
+    public function get_attendance_by_id($id) {
+        return $this->db->get('attendance', [['id', '=', $id]], true);
+    }
+
+    public function update_attendance($id, $data) {
+        return $this->db->update('attendance', $data, [['id', '=', $id]]);
+    }
+
+    public function delete_attendance($id) {
+        return $this->db->delete('attendance', [['id', '=', $id]]);
+    }
 }

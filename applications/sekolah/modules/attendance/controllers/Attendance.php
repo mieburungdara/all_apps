@@ -52,4 +52,47 @@ class Attendance extends Controller {
 
         $this->load->view('attendance/manage', $data);
     }
+
+    public function edit($id) {
+        $this->_authorize(['admin']);
+        $this->load->model('Users_model');
+
+        $data['title'] = 'Edit Attendance';
+        $data['attendance'] = $this->Attendance_model->get_attendance_by_id($id);
+        $data['all_users'] = $this->Users_model->get_all_users();
+
+        if (!$data['attendance']) {
+            show_404();
+        }
+
+        $this->load->view('attendance/edit', $data);
+    }
+
+    public function update() {
+        $this->_authorize(['admin']);
+        $id = $this->input->post('id');
+
+        // Combine date and time for full DATETIME format
+        $check_in = $this->input->post('date') . ' ' . $this->input->post('check_in_time');
+        $check_out = $this->input->post('date') . ' ' . $this->input->post('check_out_time');
+
+        $data = [
+            'user_id' => $this->input->post('user_id'),
+            'date' => $this->input->post('date'),
+            'check_in_time' => !empty($this->input->post('check_in_time')) ? date('Y-m-d H:i:s', strtotime($check_in)) : null,
+            'check_out_time' => !empty($this->input->post('check_out_time')) ? date('Y-m-d H:i:s', strtotime($check_out)) : null,
+            'status' => $this->input->post('status')
+        ];
+
+        $this->Attendance_model->update_attendance($id, $data);
+        $this->session->set_flash('success', 'Attendance record updated successfully!');
+        $this->response->redirect('/sekolah/attendance/manage');
+    }
+
+    public function delete($id) {
+        $this->_authorize(['admin']);
+        $this->Attendance_model->delete_attendance($id);
+        $this->session->set_flash('success', 'Attendance record deleted successfully!');
+        $this->response->redirect('/sekolah/attendance/manage');
+    }
 }
