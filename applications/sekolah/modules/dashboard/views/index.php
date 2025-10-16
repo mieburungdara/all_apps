@@ -1,11 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title><?php echo $title; ?></title>
-</head>
-<body>
-    <h1><?php echo $welcome_message; ?></h1>
-    <p>This is the dashboard of the school application, powered by your custom framework!</p>
-</body>
-</html>
+<div class="content">
+    <div class="row">
+        <div class="col-12">
+            <div class="block block-rounded">
+                <div class="block-header block-header-default">
+                    <h3 class="block-title">Welcome</h3>
+                </div>
+                <div class="block-content">
+                    <p><?php echo htmlspecialchars($welcome_message); ?></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
