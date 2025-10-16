@@ -92,3 +92,4 @@
 - Added a dedicated 403 Access Denied error page.
 - Integrated Dashmix theme as the main application layout.
 - Refactored auth and installer pages to match the Dashmix theme.
+- Added a user management CRUD interface to the admin area.

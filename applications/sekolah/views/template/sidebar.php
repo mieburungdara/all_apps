@@ -20,7 +20,13 @@
               <li class="nav-main-item">
                 <a class="nav-main-link" href="/sekolah/admin">
                   <i class="nav-main-link-icon fa fa-shield-alt"></i>
-                  <span class="nav-main-link-name">Admin Area</span>
+                  <span class="nav-main-link-name">Admin Dashboard</span>
+                </a>
+              </li>
+              <li class="nav-main-item">
+                <a class="nav-main-link" href="/sekolah/admin/users">
+                  <i class="nav-main-link-icon fa fa-users"></i>
+                  <span class="nav-main-link-name">User Management</span>
                 </a>
               </li>
             </ul>

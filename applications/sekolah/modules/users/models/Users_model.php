@@ -34,4 +34,21 @@ class Users_model extends Model {
     public function get_user_by_id($id) {
         return $this->get('users', [['id', '=', $id]], true);
     }
+
+    public function get_all_users() {
+        return $this->get('users');
+    }
+
+    public function update_user($id, $data) {
+        if (isset($data['password']) && !empty($data['password'])) {
+            $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+        } else {
+            unset($data['password']);
+        }
+        return $this->update('users', $data, [['id', '=', $id]]);
+    }
+
+    public function delete_user($id) {
+        return $this->delete('users', [['id', '=', $id]]);
+    }
 }

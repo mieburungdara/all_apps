@@ -30,4 +30,18 @@ class Auth_model extends Model {
         $results = $this->db->query($sql, [':user_id' => $user_id]);
         return array_column($results, 'role_name');
     }
+
+    public function get_all_roles() {
+        return $this->db->query("SELECT * FROM roles");
+    }
+
+    public function update_user_roles($user_id, $role_ids) {
+        // First, delete existing roles for the user
+        $this->db->delete('user_roles', [['user_id', '=', $user_id]]);
+
+        // Then, assign the new roles
+        foreach ($role_ids as $role_id) {
+            $this->assign_role($user_id, $role_id);
+        }
+    }
 }
