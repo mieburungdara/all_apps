@@ -15,6 +15,7 @@
     - `core/Model.php`: A base model with PDO database connection logic and helper methods (`get`, `insert`, `update`, `delete`).
     - `core/Config.php`: A singleton class to handle loading configuration files.
     - `core/Input.php`: A singleton class to securely handle user input.
+    - `core/helpers.php`: A file for global helper functions like `base_url()` and `asset_url()`.
 - **School Application (`applications/sekolah/`):**
     - `index.php`: Application entry point.
     - `config/database.php`: Application-specific database configuration file.
@@ -39,3 +40,4 @@
 - The main portal `index.php` now uses clean URLs.
 - Updated `todo.md` with Google Login feature plan.
 - Refactored `Users` controller to use the new `Input` library.
+- Refactored all views and templates to use the `asset_url()` helper for pathing.
