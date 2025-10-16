@@ -18,4 +18,48 @@ class Api extends Controller {
         
         $this->response->json($this->api_user);
     }
+
+    public function users() {
+        $this->load->model('Auth_model');
+        // Check if the authenticated user is an admin
+        if (!$this->Auth_model->user_has_role($this->api_user['id'], 'admin')) {
+            $this->response->set_status_code(403)->json(['error' => 'Forbidden', 'message' => 'You do not have permission to access this resource.']);
+            exit;
+        }
+
+        $this->load->model('Users_model');
+        $users = $this->Users_model->get_all_users();
+
+        // Sanitize data before sending
+        $sanitized_users = array_map(function($user) {
+            unset($user['password']);
+            unset($user['api_key']);
+            return $user;
+        }, $users);
+
+        $this->response->json($sanitized_users);
+    }
+
+    public function user($id) {
+        $this->load->model('Auth_model');
+        // Check if the authenticated user is an admin
+        if (!$this->Auth_model->user_has_role($this->api_user['id'], 'admin')) {
+            $this->response->set_status_code(403)->json(['error' => 'Forbidden', 'message' => 'You do not have permission to access this resource.']);
+            exit;
+        }
+
+        $this->load->model('Users_model');
+        $user = $this->Users_model->get_user_by_id($id);
+
+        if (!$user) {
+            $this->response->set_status_code(404)->json(['error' => 'Not Found', 'message' => 'User not found.']);
+            exit;
+        }
+
+        // Sanitize data
+        unset($user['password']);
+        unset($user['api_key']);
+
+        $this->response->json($user);
+    }
 }

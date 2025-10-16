@@ -96,6 +96,7 @@
 - Added a dedicated 404 Not Found error page.
 - Implemented server-side form validation with persistent old input.
 - Added API key authentication via Bearer token.
+- Added admin-only API endpoints for listing users (`/api/users`) and fetching a single user (`/api/user/{id}`).
 
 ### Changed
 - Improved flash message system to be more robust and consistently styled.
