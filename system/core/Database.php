@@ -87,24 +87,7 @@ class Database {
         return $stmt->execute($params);
     }
 
-    public function delete($table, $where = []) {
-        $sql = "DELETE FROM {$table}";
-        $params = [];
-        if (!empty($where)) {
-            $sql .= " WHERE ";
-            $conditions = [];
-            foreach ($where as $index => $condition) {
-                $column = $condition[0];
-                $operator = $condition[1];
-                $value = $condition[2];
-                $placeholder = ":where_{$column}_{$index}";
-                $conditions[] = "{$column} {$operator} {$placeholder}";
-                $params[$placeholder] = $value;
-            }
-            $sql .= implode(' AND ', $conditions);
-        }
-
-        $stmt = $this->db->prepare($sql);
-        return $stmt->execute($params);
+    public function exec($sql) {
+        return $this->db->exec($sql);
     }
 }

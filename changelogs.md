@@ -86,3 +86,4 @@
 - Implemented failsafe error and shutdown handlers in `bootstrap.php` to log early-stage fatal errors.
 - Integrated an `xss_clean` function into the `Input` library to automatically sanitize all GET and POST data.
 - Implemented Google Social Login using `league/oauth2-google`.
+- Added a web-based installer module.

@@ -23,6 +23,12 @@ set_error_handler(function($severity, $message, $file, $line) {
     return true; // Don't execute PHP internal error handler
 });
 
+// Redirect to installer if not installed
+if (!file_exists(APPPATH . 'installed.lock') && strpos($_SERVER['REQUEST_URI'], '/install') === false) {
+    header('Location: /sekolah/installer');
+    exit;
+}
+
 // Load Composer's autoloader
 require_once __DIR__ . '/../../vendor/autoload.php';
 
