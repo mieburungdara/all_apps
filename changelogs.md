@@ -80,3 +80,4 @@
 - Enhanced `Config` library with dynamic item management (`item()`, `set_item()`) and caching.
 - Enhanced `Response` library with methods for setting status codes and custom headers.
 - Enhanced `Session` library with ID regeneration and improved flash message setting.
+- Implemented failsafe error and shutdown handlers in `bootstrap.php` to log early-stage fatal errors.
