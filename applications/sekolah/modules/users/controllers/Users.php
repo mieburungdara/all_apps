@@ -59,6 +59,7 @@ class Users extends Controller {
             $user = $this->Users_model->check_login($email, $password);
 
             if ($user) {
+                $this->session->regenerate_id();
                 $this->session->set('user_id', $user['id']);
                 $this->session->set('user_nama', $user['nama']);
                 $this->session->set_flash('success', 'Selamat datang kembali, ' . $user['nama'] . '!');

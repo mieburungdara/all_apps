@@ -30,8 +30,19 @@ class Session {
         session_destroy();
     }
 
-    public function set_flash($key, $message) {
-        $_SESSION['__flash'][$key] = $message;
+    public function regenerate_id() {
+        // This helps prevent session fixation attacks.
+        session_regenerate_id(true);
+    }
+
+    public function set_flash($key, $message = '') {
+        if (is_array($key)) {
+            foreach ($key as $k => $v) {
+                $_SESSION['__flash'][$k] = $v;
+            }
+        } else {
+            $_SESSION['__flash'][$key] = $message;
+        }
     }
 
     public function has_flash($key) {
@@ -57,7 +68,6 @@ class Session {
 
     public function validate_csrf_token($token) {
         $session_token = $this->get('csrf_token');
-        // Invalidate the token after first use for better security
         $this->set('csrf_token', null);
         return hash_equals($session_token, $token);
     }
@@ -69,7 +79,6 @@ class Session {
     public function get_old_input($key) {
         $old_input = $this->get('__old_input');
         if (isset($old_input[$key])) {
-            // Clear the old input after retrieving it
             $value = $old_input[$key];
             unset($_SESSION['__old_input'][$key]);
             return $value;

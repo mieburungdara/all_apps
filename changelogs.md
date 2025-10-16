@@ -79,3 +79,4 @@
 - Implemented lazy loading for core libraries in the `Loader` for better performance.
 - Enhanced `Config` library with dynamic item management (`item()`, `set_item()`) and caching.
 - Enhanced `Response` library with methods for setting status codes and custom headers.
+- Enhanced `Session` library with ID regeneration and improved flash message setting.
