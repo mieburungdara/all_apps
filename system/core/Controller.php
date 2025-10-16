@@ -3,21 +3,14 @@
 class Controller {
 
     protected $module_path;
-    protected $input;
-    protected $session;
-    public $load;
-    public $log;
-    public $response;
+    private static $instance;
 
     public function __construct($module_path, $called_method) {
+        self::$instance = $this;
         $this->module_path = $module_path;
         
-        // Instantiate core libraries
-        $this->input = Input::getInstance();
-        $this->session = Session::getInstance();
+        // The Loader is the only library we need to instantiate directly.
         $this->load = new Loader();
-        $this->log = Log::getInstance();
-        $this->response = new Response();
 
         // Check if the called method requires authentication
         if (isset($this->protected_methods) && in_array($called_method, $this->protected_methods)) {
@@ -25,15 +18,23 @@ class Controller {
         }
     }
 
-    // This is needed by the Loader to find module-specific models
+    public static function &get_instance() {
+        return self::$instance;
+    }
+
+    public function __get($key) {
+        $this->$key = $this->load->library($key);
+        return $this->$key;
+    }
+
     public function getModulePath() {
         return $this->module_path;
     }
 
     protected function _auth_check() {
         if ($this->session->get('user_id') === null) {
-            header('Location: /sekolah/users/login');
-            exit();
+            // Use the response library for redirection
+            $this->response->redirect('/sekolah/users/login');
         }
     }
 }

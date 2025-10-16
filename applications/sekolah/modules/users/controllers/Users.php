@@ -4,7 +4,7 @@ class Users extends Controller {
 
     public function __construct($module_path, $called_method) {
         parent::__construct($module_path, $called_method);
-        $this->load->model('Users_model', $this);
+        $this->load->model('Users_model');
     }
 
     private function _is_valid_post() {

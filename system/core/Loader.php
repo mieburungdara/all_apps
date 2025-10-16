@@ -2,47 +2,66 @@
 
 class Loader {
 
+    private $_loaded_libraries = [];
+
     public function __construct() {}
 
+    public function library($library) {
+        $library = ucfirst($library);
+        if (isset($this->_loaded_libraries[$library])) {
+            return $this->_loaded_libraries[$library];
+        }
+
+        $file_path = SYSPATH . 'core/' . $library . '.php';
+        if (!file_exists($file_path)) {
+            show_error("Core library not found: {$library}.php");
+        }
+        require_once $file_path;
+
+        // Handle singletons vs regular classes
+        if (method_exists($library, 'getInstance')) {
+            $instance = $library::getInstance();
+        } else {
+            $instance = new $library();
+        }
+
+        $this->_loaded_libraries[$library] = $instance;
+        return $instance;
+    }
+
     public function view($view, $data = []) {
-        // Construct the path to the view file within the module
-        // Note: This requires the Loader to know the module path.
-        // We will pass it from the controller.
-        $view_path = $data['__module_path'] . 'views/' . $view . '.php';
+        $CI =& Controller::get_instance();
+        $view_path = $CI->getModulePath() . 'views/' . $view . '.php';
 
         if (file_exists($view_path)) {
             extract($data);
             require $view_path;
         } else {
-            die("View file not found: {$view_path}");
+            show_error("View file not found: {$view_path}");
         }
     }
 
     public function template($view, $data = []) {
-        // The template loader automatically includes header, sidebar, top_nav, and footer.
-        $data['__module_path'] = $data['__module_path'] ?? ''; // Ensure it exists
-        
         $this->view('templates/header', $data);
         $this->view('templates/sidebar', $data);
         $this->view('templates/top_nav', $data);
 
-        // Main content starts here
         echo '<main id="main-container">';
-        $this->view($view, $data); // Your main content view
+        $this->view($view, $data); 
         echo '</main>';
 
         $this->view('templates/footer', $data);
     }
 
-    public function model($model, &$controller_instance) {
-        $module_path = $controller_instance->getModulePath();
-        $model_path = $module_path . 'models/' . $model . '.php';
+    public function model($model_name) {
+        $CI =& Controller::get_instance();
+        $model_path = $CI->getModulePath() . 'models/' . $model_name . '.php';
 
         if (file_exists($model_path)) {
             require_once $model_path;
-            $controller_instance->$model = new $model();
+            $CI->$model_name = new $model_name();
         } else {
-            die("Model file not found: {$model_path}");
+            show_error("Model file not found: {$model_path}");
         }
     }
 }
