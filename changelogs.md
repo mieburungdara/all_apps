@@ -45,3 +45,4 @@
 - Refactored all views and templates to use the `asset_url()` helper for pathing.
 - Replaced `die()` calls with the new `show_error()` helper for better error handling.
 - Integrated the Log library into the base Controller and Error_Controller.
+- Enhanced `Log` library to automatically include file, line, and function details in messages.
