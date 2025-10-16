@@ -27,7 +27,7 @@ class Database {
         return self::$instance;
     }
 
-    public function get($table, $where = []) {
+    public function get($table, $where = [], $single = false, $limit = null, $offset = null) {
         $sql = "SELECT * FROM {$table}";
         $params = [];
         if (!empty($where)) {
@@ -44,9 +44,40 @@ class Database {
             $sql .= implode(' AND ', $conditions);
         }
 
+        if ($limit !== null) {
+            $sql .= " LIMIT :limit";
+            $params[':limit'] = (int)$limit;
+        }
+
+        if ($offset !== null) {
+            $sql .= " OFFSET :offset";
+            $params[':offset'] = (int)$offset;
+        }
+
         $stmt = $this->query($sql, $params);
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $single ? ($result[0] ?? null) : $result;
+    }
+
+    public function count($table, $where = []) {
+        $sql = "SELECT COUNT(*) as count FROM {$table}";
+        $params = [];
+        if (!empty($where)) {
+            $sql .= " WHERE ";
+            $conditions = [];
+            foreach ($where as $index => $condition) {
+                $column = $condition[0];
+                $operator = $condition[1];
+                $value = $condition[2];
+                $placeholder = ":where_{$column}_{$index}";
+                $conditions[] = "{$column} {$operator} {$placeholder}";
+                $params[$placeholder] = $value;
+            }
+            $sql .= implode(' AND ', $conditions);
+        }
+
+        $result = $this->fetch_one($sql, $params);
+        return (int)($result['count'] ?? 0);
     }
 
     public function insert($table, $data) {

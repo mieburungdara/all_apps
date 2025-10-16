@@ -55,28 +55,40 @@ Returns the details of the user associated with the provided API key.
 
 ### 2. Get All Users
 
-Returns a list of all users in the system.
+Returns a paginated list of all users in the system.
 
 - **Method:** `GET`
 - **URL:** `/sekolah/api/users`
 - **Permissions:** **Admin only**.
 
+#### Query Parameters
+- `page` (optional): The page number to retrieve. Default: `1`.
+- `limit` (optional): The number of records per page. Default: `20`.
+
 #### Successful Response (200 OK)
 ```json
-[
-  {
-    "id": 1,
-    "nama": "Admin User",
-    "email": "admin@example.com",
-    "created_at": "2025-10-16 12:00:00"
-  },
-  {
-    "id": 2,
-    "nama": "Jane Doe",
-    "email": "jane@example.com",
-    "created_at": "2025-10-16 12:05:00"
+{
+  "data": [
+    {
+      "id": 1,
+      "nama": "Admin User",
+      "email": "admin@example.com",
+      "created_at": "2025-10-16 12:00:00"
+    },
+    {
+      "id": 2,
+      "nama": "Jane Doe",
+      "email": "jane@example.com",
+      "created_at": "2025-10-16 12:05:00"
+    }
+  ],
+  "pagination": {
+    "total_records": 150,
+    "current_page": 1,
+    "total_pages": 8,
+    "limit": 20
   }
-]
+}
 ```
 
 #### Error Response (403 Forbidden)

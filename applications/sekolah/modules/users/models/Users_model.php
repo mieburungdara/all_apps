@@ -40,8 +40,12 @@ class Users_model extends Model {
         return $this->get('users', [['api_key', '=', $api_key]], true);
     }
 
-    public function get_all_users() {
-        return $this->get('users');
+    public function get_all_users($limit = null, $offset = null) {
+        return $this->get('users', [], false, $limit, $offset);
+    }
+
+    public function get_total_users_count() {
+        return $this->db->count('users');
     }
 
     public function update_user($id, $data) {

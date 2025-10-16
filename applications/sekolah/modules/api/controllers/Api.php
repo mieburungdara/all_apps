@@ -28,7 +28,15 @@ class Api extends Controller {
         }
 
         $this->load->model('Users_model');
-        $users = $this->Users_model->get_all_users();
+
+        // Pagination parameters
+        $page = (int)($this->input->get('page', 1));
+        $limit = (int)($this->input->get('limit', 20));
+        $offset = ($page - 1) * $limit;
+
+        $users = $this->Users_model->get_all_users($limit, $offset);
+        $total_records = $this->Users_model->get_total_users_count();
+        $total_pages = ceil($total_records / $limit);
 
         // Sanitize data before sending
         $sanitized_users = array_map(function($user) {
@@ -37,7 +45,17 @@ class Api extends Controller {
             return $user;
         }, $users);
 
-        $this->response->json($sanitized_users);
+        $response = [
+            'data' => $sanitized_users,
+            'pagination' => [
+                'total_records' => $total_records,
+                'current_page' => $page,
+                'total_pages' => $total_pages,
+                'limit' => $limit
+            ]
+        ];
+
+        $this->response->json($response);
     }
 
     public function user($id) {
