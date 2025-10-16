@@ -6,6 +6,7 @@ class Controller {
     protected $input;
     protected $session;
     public $load;
+    public $log;
 
     public function __construct($module_path, $called_method) {
         $this->module_path = $module_path;
@@ -14,6 +15,7 @@ class Controller {
         $this->input = Input::getInstance();
         $this->session = Session::getInstance();
         $this->load = new Loader();
+        $this->log = Log::getInstance();
 
         // Check if the called method requires authentication
         if (isset($this->protected_methods) && in_array($called_method, $this->protected_methods)) {
