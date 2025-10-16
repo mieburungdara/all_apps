@@ -89,3 +89,4 @@
 - Added a web-based installer module.
 - Improved installer to check for existing tables before running migrations.
 - Added a role-based access control (RBAC) system with a new `Auth_model`.
+- Added a dedicated 403 Access Denied error page.

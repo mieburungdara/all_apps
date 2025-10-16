@@ -45,7 +45,6 @@ class Controller {
         }
 
         // If we get here, user does not have any of the required roles
-        $this->session->set_flash('error', 'You do not have permission to access this page.');
-        $this->response->redirect('/sekolah/users/dashboard'); // Or a dedicated 403 page
+        $this->response->redirect('/sekolah/errors/show_403');
     }
 }
