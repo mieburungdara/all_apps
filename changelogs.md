@@ -46,3 +46,4 @@
 - Replaced `die()` calls with the new `show_error()` helper for better error handling.
 - Integrated the Log library into the base Controller and Error_Controller.
 - Enhanced `Log` library to automatically include file, line, and function details in messages.
+- Refactored `Error_Controller` to use a themed view, providing a consistent UI for errors.

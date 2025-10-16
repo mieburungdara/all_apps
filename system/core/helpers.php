@@ -2,20 +2,15 @@
 
 if (!function_exists('base_url')) {
     function base_url($uri = '') {
-        // Get the config instance
         $config = Config::getInstance();
         $app_config = $config->load('app');
-        
         $base_url = $app_config['base_url'];
-        
         return rtrim($base_url, '/') . '/' . ltrim($uri, '/');
     }
 }
 
 if (!function_exists('asset_url')) {
     function asset_url($path = '') {
-        // This function assumes assets are always at the root level's public folder
-        // We can make this more dynamic later if needed.
         return '/' . 'assets/' . ltrim($path, '/');
     }
 }
@@ -30,6 +25,12 @@ if (!function_exists('csrf_input')) {
 
 if (!function_exists('show_error')) {
     function show_error($message) {
+        // This is a hack. We need a better way to determine the current application.
+        if (!defined('APPPATH')) {
+            define('APPPATH', realpath(__DIR__ . '/../../applications/sekolah') . '/');
+        }
+        require_once SYSPATH . 'core/Controller.php'; // Error controller extends this
+        require_once SYSPATH . 'core/Loader.php'; // Controller uses this
         require_once SYSPATH . 'core/Error_Controller.php';
         $error = new Error_Controller();
         $error->show_general($message);
@@ -39,6 +40,11 @@ if (!function_exists('show_error')) {
 
 if (!function_exists('show_404')) {
     function show_404() {
+        if (!defined('APPPATH')) {
+            define('APPPATH', realpath(__DIR__ . '/../../applications/sekolah') . '/');
+        }
+        require_once SYSPATH . 'core/Controller.php';
+        require_once SYSPATH . 'core/Loader.php';
         require_once SYSPATH . 'core/Error_Controller.php';
         $error = new Error_Controller();
         $error->show_404();
