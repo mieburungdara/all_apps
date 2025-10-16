@@ -8,9 +8,10 @@ class Installer extends Controller {
     }
 
     public function index() {
+        $data['title'] = 'Installer';
         $data['php_version'] = phpversion();
         $data['pdo_enabled'] = extension_loaded('pdo_sqlite');
-        $this->load->view('install/welcome', $data);
+        $this->load->view('install/welcome', $data, 'auth');
     }
 
     public function database() {
@@ -27,7 +28,8 @@ class Installer extends Controller {
                 $this->session->set_flash('error', 'Could not create database: ' . $e->getMessage());
             }
         }
-        $this->load->view('install/database');
+        $data['title'] = 'Database Setup';
+        $this->load->view('install/database', $data, 'auth');
     }
     
     public function run_migration()
@@ -56,11 +58,13 @@ class Installer extends Controller {
 
             $this->response->redirect('/sekolah/installer/finish');
         }
-        $this->load->view('install/admin');
+        $data['title'] = 'Create Admin';
+        $this->load->view('install/admin', $data, 'auth');
     }
 
     public function finish() {
         file_put_contents(APPPATH . 'installed.lock', 'installed');
-        $this->load->view('install/finish');
+        $data['title'] = 'Finished';
+        $this->load->view('install/finish', $data, 'auth');
     }
 }

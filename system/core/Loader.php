@@ -29,19 +29,23 @@ class Loader {
         return $instance;
     }
 
-    public function view($view, $data = [], $use_template = true) {
+    public function view($view, $data = [], $template = 'main') {
         $view_path = $this->module_path . 'views/' . $view . '.php';
 
         if (file_exists($view_path)) {
             extract($data);
 
-            if ($use_template) {
+            if ($template === 'main') {
                 require_once APPPATH . 'views/template/header.php';
                 require_once APPPATH . 'views/template/sidebar.php';
                 require_once APPPATH . 'views/template/topbar.php';
                 require_once $view_path;
                 require_once APPPATH . 'views/template/footer.php';
-            } else {
+            } elseif ($template === 'auth') {
+                require_once APPPATH . 'views/template/auth_header.php';
+                require_once $view_path;
+                require_once APPPATH . 'views/template/auth_footer.php';
+            } else { // No template
                 require_once $view_path;
             }
         } else {

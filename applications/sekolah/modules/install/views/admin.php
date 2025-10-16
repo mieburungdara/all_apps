@@ -1,18 +1,22 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Create Admin User</title>
-</head>
-<body>
-    <h1>Create Admin User</h1>
+<div class="p-4">
+    <div class="mb-4">
+        <h1 class="fs-2 fw-bold mb-1">Create Admin User</h1>
+        <p class="fw-medium text-muted">
+            Create the first administrator account.
+        </p>
+    </div>
     <form method="POST">
-        <label for="nama">Name:</label>
-        <input type="text" id="nama" name="nama" required><br>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required><br>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required><br>
-        <button type="submit">Create Admin</button>
+        <div class="mb-4">
+            <input type="text" class="form-control form-control-lg" name="nama" placeholder="Full Name" required>
+        </div>
+        <div class="mb-4">
+            <input type="email" class="form-control form-control-lg" name="email" placeholder="Email" required>
+        </div>
+        <div class="mb-4">
+            <input type="password" class="form-control form-control-lg" name="password" placeholder="Password" required>
+        </div>
+        <div class="mb-4">
+            <button type="submit" class="btn btn-lg btn-alt-primary w-100">Create Admin & Continue</button>
+        </div>
     </form>
-</body>
-</html>
+</div>

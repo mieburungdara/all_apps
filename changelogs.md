@@ -91,3 +91,4 @@
 - Added a role-based access control (RBAC) system with a new `Auth_model`.
 - Added a dedicated 403 Access Denied error page.
 - Integrated Dashmix theme as the main application layout.
+- Refactored auth and installer pages to match the Dashmix theme.
