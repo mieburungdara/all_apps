@@ -53,3 +53,4 @@
 - Refactored `asset_url()` to be based on a new root-level `base_url()` helper, making it robust for any subdirectory.
 - Integrated a new `Validator` class into the `Input` library.
 - Refactored the user registration process to use the new validation system.
+- Enhanced `Validator` with `matches` and `unique` (database) rules.

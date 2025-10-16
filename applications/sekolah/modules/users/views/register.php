@@ -33,6 +33,12 @@ $this->view('templates/auth_header', $data);
                         <div class="invalid-feedback"><?php echo $errors['password'][0]; ?></div>
                     <?php endif; ?>
                 </div>
+                <div class="mb-4">
+                    <input type="password" class="form-control form-control-lg form-control-alt <?php echo isset($errors['password_confirm']) ? 'is-invalid' : ''; ?>" id="password_confirm" name="password_confirm" placeholder="Confirm Password">
+                    <?php if (isset($errors['password_confirm'])): ?>
+                        <div class="invalid-feedback"><?php echo $errors['password_confirm'][0]; ?></div>
+                    <?php endif; ?>
+                </div>
             </div>
             <div class="mb-4">
                 <button type="submit" class="btn w-100 btn-lg btn-hero btn-primary">

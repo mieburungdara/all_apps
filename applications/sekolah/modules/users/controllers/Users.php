@@ -16,8 +16,9 @@ class Users extends Controller {
 
             $rules = [
                 'nama' => 'required|min_length[3]',
-                'email' => 'required|email',
-                'password' => 'required|min_length[6]'
+                'email' => 'required|email|unique[users.email]',
+                'password' => 'required|min_length[6]',
+                'password_confirm' => 'required|matches[password]'
             ];
 
             if ($this->input->validate($rules)) {
