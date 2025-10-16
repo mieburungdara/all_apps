@@ -69,6 +69,26 @@ class Validator {
                     $this->add_error($field, $message);
                 }
                 break;
+            case 'numeric':
+                if (!empty($value) && !is_numeric($value)) {
+                    $this->add_error($field, $message);
+                }
+                break;
+            case 'alpha':
+                if (!empty($value) && !ctype_alpha($value)) {
+                    $this->add_error($field, $message);
+                }
+                break;
+            case 'alpha_space':
+                if (!empty($value) && !preg_match('/^[A-Z ]+$/i', $value)) {
+                    $this->add_error($field, $message);
+                }
+                break;
+            case 'alpha_numeric':
+                if (!empty($value) && !ctype_alnum($value)) {
+                    $this->add_error($field, $message);
+                }
+                break;
         }
     }
 
