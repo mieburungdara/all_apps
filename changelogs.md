@@ -19,6 +19,7 @@
     - `core/Error_Controller.php`: A system controller for displaying error pages.
     - `core/Log.php`: A library for writing leveled log messages to files.
     - `core/Validator.php`: A class to handle data validation rules.
+    - `core/Language.php`: A library for loading language files.
 - **School Application (`applications/sekolah/`):**
     - `index.php`: Application entry point.
     - `config/database.php`: Application-specific database configuration file.
@@ -55,3 +56,4 @@
 - Refactored the user registration process to use the new validation system.
 - Enhanced `Validator` with `matches` and `unique` (database) rules.
 - Implemented 'old input' functionality to repopulate forms on validation failure.
+- Implemented a language library and internationalized validation messages.

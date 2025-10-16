@@ -4,6 +4,12 @@ class Validator {
 
     private $errors = [];
     private $db;
+    private $lang;
+
+    public function __construct() {
+        require_once SYSPATH . 'core/Language.php';
+        $this->lang = Language::getInstance();
+    }
 
     public function validate($data, $rules) {
         foreach ($rules as $field => $rule_string) {
@@ -21,34 +27,38 @@ class Validator {
         $param = null;
         if (strpos($rule, '[') !== false) {
             preg_match('/(.*?)\[(.*?)\]/', $rule, $matches);
-            $rule = $matches[1];
+            $rule_name = $matches[1];
             $param = $matches[2];
+        } else {
+            $rule_name = $rule;
         }
 
-        switch ($rule) {
+        $message = str_replace(['{field}', '{param}'], [$field, $param], $this->lang->line($rule_name));
+
+        switch ($rule_name) {
             case 'required':
                 if (empty($value)) {
-                    $this->add_error($field, "The {$field} field is required.");
+                    $this->add_error($field, $message);
                 }
                 break;
             case 'email':
                 if (!empty($value) && !filter_var($value, FILTER_VALIDATE_EMAIL)) {
-                    $this->add_error($field, "The {$field} field must be a valid email address.");
+                    $this->add_error($field, $message);
                 }
                 break;
             case 'min_length':
                 if (!empty($value) && strlen($value) < $param) {
-                    $this->add_error($field, "The {$field} field must be at least {$param} characters long.");
+                    $this->add_error($field, $message);
                 }
                 break;
             case 'max_length':
                 if (!empty($value) && strlen($value) > $param) {
-                    $this->add_error($field, "The {$field} field cannot exceed {$param} characters.");
+                    $this->add_error($field, $message);
                 }
                 break;
             case 'matches':
                 if ($value !== ($data[$param] ?? null)) {
-                    $this->add_error($field, "The {$field} field must match the {$param} field.");
+                    $this->add_error($field, $message);
                 }
                 break;
             case 'unique':
@@ -56,7 +66,7 @@ class Validator {
                 list($table, $column) = explode('.', $param);
                 $result = $this->db->get($table, [$column => $value]);
                 if (!empty($result)) {
-                    $this->add_error($field, "The {$field} is already taken.");
+                    $this->add_error($field, $message);
                 }
                 break;
         }
