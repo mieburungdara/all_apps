@@ -42,8 +42,12 @@ class Api extends Controller {
 
     public function user($id) {
         $this->load->model('Auth_model');
-        // Check if the authenticated user is an admin
-        if (!$this->Auth_model->user_has_role($this->api_user['id'], 'admin')) {
+        
+        $is_admin = $this->Auth_model->user_has_role($this->api_user['id'], 'admin');
+        $is_self = ($this->api_user['id'] == $id);
+
+        // Allow access if user is an admin or is requesting their own data
+        if (!$is_admin && !$is_self) {
             $this->response->set_status_code(403)->json(['error' => 'Forbidden', 'message' => 'You do not have permission to access this resource.']);
             exit;
         }
@@ -58,7 +62,12 @@ class Api extends Controller {
 
         // Sanitize data
         unset($user['password']);
-        unset($user['api_key']);
+        
+        // An admin should not see another user's API key.
+        // A user should see their own API key.
+        if ($is_admin && !$is_self) {
+            unset($user['api_key']);
+        }
 
         $this->response->json($user);
     }

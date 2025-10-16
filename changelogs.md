@@ -100,3 +100,4 @@
 
 ### Changed
 - Improved flash message system to be more robust and consistently styled.
+- The `/api/user/{id}` endpoint now allows non-admin users to fetch their own data.
