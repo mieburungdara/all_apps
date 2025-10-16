@@ -43,10 +43,33 @@ class Admin extends Controller {
     }
 
     public function save_user() {
+        $user_id = $this->input->post('id');
+
+        // Define validation rules
+        $rules = [
+            'nama' => 'required|alpha_space',
+            'email' => 'required|email|is_unique[users.email.id.' . $user_id . ']',
+        ];
+
+        if (empty($user_id) || !empty($this->input->post('password'))) {
+            $rules['password'] = 'required|min_length[8]';
+        }
+
+        if (!$this->input->validate($rules)) {
+            $this->session->set_flash('errors', $this->input->get_errors());
+            $this->session->set_old_input($this->input->post());
+
+            if ($user_id) {
+                $this->response->redirect('/sekolah/admin/edit_user/' . $user_id);
+            } else {
+                $this->response->redirect('/sekolah/admin/add_user');
+            }
+            return; // Stop execution
+        }
+
         $this->load->model('Users_model');
         $this->load->model('Auth_model');
 
-        $user_id = $this->input->post('id');
         $user_data = [
             'nama' => $this->input->post('nama'),
             'email' => $this->input->post('email'),
@@ -55,18 +78,14 @@ class Admin extends Controller {
         $role_ids = $this->input->post('roles') ?? [];
 
         if (empty($user_id)) { // New user
-            unset($user_data['password']); // Let register_user handle hashing
-            $new_user_data = [
-                'nama' => $this->input->post('nama'),
-                'email' => $this->input->post('email'),
-                'password' => $this->input->post('password'),
-            ];
-            $user_id = $this->Users_model->register_user($new_user_data);
+            $user_id = $this->Users_model->register_user($user_data);
         } else { // Existing user
             $this->Users_model->update_user($user_id, $user_data);
         }
 
         $this->Auth_model->update_user_roles($user_id, $role_ids);
+
+        $this->session->set_flash('success', 'User saved successfully!');
         $this->response->redirect('/sekolah/admin/users');
     }
 

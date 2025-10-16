@@ -24,3 +24,6 @@
         </div>
       </header>
       <main id="main-container">
+        <div class="content">
+            <?php require_once APPPATH . 'views/template/partials/flash_messages.php'; ?>
+        </div>

@@ -50,12 +50,21 @@ class Session {
     }
 
     public function get_flash($key) {
-        if ($this->has_flash($key)) {
-            $message = $_SESSION['__flash'][$key];
-            unset($_SESSION['__flash'][$key]);
-            return $message;
+        $value = $_SESSION['flash'][$key] ?? null;
+        unset($_SESSION['flash'][$key]);
+        return $value;
+    }
+
+    public function set_old_input($data) {
+        $this->set_flash('old_input', $data);
+    }
+
+    public function get_old_input($key = null) {
+        $old_input = $this->get_flash('old_input');
+        if ($key === null) {
+            return $old_input;
         }
-        return null;
+        return $old_input[$key] ?? null;
     }
 
     public function generate_csrf_token() {
