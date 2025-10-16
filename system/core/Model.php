@@ -51,33 +51,32 @@ class Model {
     }
 
     public function update($table, $data, $where) {
-        // This also needs to be updated to the new where clause format
-        // We will do this when we build the profile update page.
         $data_fields = [];
+        $params = [];
         foreach ($data as $key => $value) {
-            $data_fields[] = "{$key} = :data_{$key}";
+            $placeholder = ":data_{$key}";
+            $data_fields[] = "{$key} = {$placeholder}";
+            $params[$placeholder] = $value;
         }
         $data_sql = implode(', ', $data_fields);
 
-        $where_fields = [];
-        foreach ($where as $key => $value) {
-            $where_fields[] = "{$key} = :where_{$key}";
+        $where_conditions = [];
+        if (!empty($where)) {
+            foreach ($where as $index => $condition) {
+                $column = $condition[0];
+                $operator = $condition[1];
+                $value = $condition[2];
+                $placeholder = ":where_{$column}_{$index}";
+                $where_conditions[] = "{$column} {$operator} {$placeholder}";
+                $params[$placeholder] = $value;
+            }
         }
-        $where_sql = implode(' AND ', $where_fields);
+        $where_sql = implode(' AND ', $where_conditions);
 
         $sql = "UPDATE {$table} SET {$data_sql} WHERE {$where_sql}";
 
         $stmt = $this->db->prepare($sql);
-
-        foreach ($data as $key => $value) {
-            $stmt->bindValue(":data_{$key}", $value);
-        }
-
-        foreach ($where as $key => $value) {
-            $stmt->bindValue(":where_{$key}", $value);
-        }
-
-        return $stmt->execute();
+        return $stmt->execute($params);
     }
 
     public function delete($table, $where = []) {
