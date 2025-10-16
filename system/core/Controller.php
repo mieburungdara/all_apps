@@ -33,4 +33,11 @@ class Controller {
             echo "Model file not found: {$model_path}";
         }
     }
+
+    protected function _auth_check() {
+        if ($this->session->get('user_id') === null) {
+            header('Location: /sekolah/users/login');
+            exit();
+        }
+    }
 }

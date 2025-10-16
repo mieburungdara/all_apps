@@ -4,6 +4,7 @@ class Dashboard extends Controller {
 
     public function __construct($module_path) {
         parent::__construct($module_path);
+        $this->_auth_check(); // Protect this entire module
         $this->load_model('Dashboard_model');
     }
 
