@@ -11,4 +11,6 @@ return [
     'alpha'      => 'Field {field} hanya boleh berisi huruf.',
     'alpha_space' => 'Field {field} hanya boleh berisi huruf dan spasi.',
     'alpha_numeric' => 'Field {field} hanya boleh berisi huruf dan angka.',
+    'valid_date' => 'Field {field} harus berisi tanggal yang valid (YYYY-MM-DD).',
+    'is_natural' => 'Field {field} hanya boleh berisi angka non-negatif.',
 ];

@@ -58,3 +58,4 @@
 - Implemented 'old input' functionality to repopulate forms on validation failure.
 - Implemented a language library and internationalized validation messages.
 - Added `numeric`, `alpha`, `alpha_space`, and `alpha_numeric` rules to the `Validator`.
+- Added `valid_date` and `is_natural` rules to the `Validator`.

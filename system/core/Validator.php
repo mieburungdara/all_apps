@@ -89,6 +89,19 @@ class Validator {
                     $this->add_error($field, $message);
                 }
                 break;
+            case 'valid_date':
+                if (!empty($value)) {
+                    $d = DateTime::createFromFormat('Y-m-d', $value);
+                    if (!($d && $d->format('Y-m-d') === $value)) {
+                        $this->add_error($field, $message);
+                    }
+                }
+                break;
+            case 'is_natural':
+                if (!empty($value) && !preg_match('/^[0-9]+$/', $value)) {
+                    $this->add_error($field, $message);
+                }
+                break;
         }
     }
 
