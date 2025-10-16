@@ -23,6 +23,9 @@ set_error_handler(function($severity, $message, $file, $line) {
     return true; // Don't execute PHP internal error handler
 });
 
+// Load Composer's autoloader
+require_once __DIR__ . '/../../vendor/autoload.php';
+
 
 // Load helper functions
 require_once __DIR__ . '/core/helpers.php';

@@ -44,9 +44,9 @@ class Database {
             $sql .= implode(' AND ', $conditions);
         }
 
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute($params);
-        return $stmt->fetchAll();
+        $stmt = $this->query($sql, $params);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $single ? ($result[0] ?? null) : $result;
     }
 
     public function insert($table, $data) {

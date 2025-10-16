@@ -21,4 +21,8 @@ class Users_model extends Model {
             return false; // Login failed
         }
     }
+
+    public function get_user_by_email($email) {
+        return $this->get('users', [['email', '=', $email]], true);
+    }
 }

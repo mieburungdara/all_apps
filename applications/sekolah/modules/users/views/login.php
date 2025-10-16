@@ -35,7 +35,17 @@ $this->view('templates/auth_header', $data);
                     </a>
                 </p>
             </div>
-        </form>
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fa fa-fw fa-sign-in-alt me-1"></i> Login
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="text-center my-3">
+                                <a href="/sekolah/users/auth/login_google" class="btn btn-danger w-100">
+                                    <i class="fab fa-google me-1"></i> Login with Google
+                                </a>
+                            </div>
     </div>
 </div>
 
