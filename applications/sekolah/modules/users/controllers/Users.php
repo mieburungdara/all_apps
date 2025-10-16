@@ -4,7 +4,7 @@ class Users extends Controller {
 
     public function __construct($module_path, $called_method) {
         parent::__construct($module_path, $called_method);
-        $this->load_model('Users_model');
+        $this->load->model('Users_model', $this);
     }
 
     public function register() {
@@ -22,7 +22,8 @@ class Users extends Controller {
                 echo "Registration failed!";
             }
         } else {
-            $this->load_view('register');
+            $data['__module_path'] = $this->module_path;
+            $this->load->view('users/register', $data);
         }
     }
 
@@ -34,11 +35,9 @@ class Users extends Controller {
             $user = $this->Users_model->check_login($email, $password);
 
             if ($user) {
-                // Set user data in session
                 $this->session->set('user_id', $user['id']);
                 $this->session->set('user_nama', $user['nama']);
 
-                // Redirect to the main dashboard
                 header('Location: /sekolah/dashboard');
                 exit();
             } else {
@@ -46,7 +45,8 @@ class Users extends Controller {
                 echo "Login failed! Invalid email or password.";
             }
         } else {
-            $this->load_view('login');
+            $data['__module_path'] = $this->module_path;
+            $this->load->view('users/login', $data);
         }
     }
 
