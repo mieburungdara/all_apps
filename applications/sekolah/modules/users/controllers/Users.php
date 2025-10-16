@@ -11,7 +11,7 @@ class Users extends Controller {
         if ($this->input->method() == 'POST') {
             // Validate CSRF token
             if (!$this->session->validate_csrf_token($this->input->csrf_token())) {
-                die('Invalid CSRF token');
+                show_error('Invalid CSRF token. Please try submitting the form again.');
             }
 
             $data = [
@@ -39,7 +39,7 @@ class Users extends Controller {
         if ($this->input->method() == 'POST') {
             // Validate CSRF token
             if (!$this->session->validate_csrf_token($this->input->csrf_token())) {
-                die('Invalid CSRF token');
+                show_error('Invalid CSRF token. Please try submitting the form again.');
             }
 
             $email = $this->input->post('email');

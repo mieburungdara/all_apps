@@ -27,3 +27,21 @@ if (!function_exists('csrf_input')) {
         echo '<input type="hidden" name="csrf_token" value="' . $token . '">';
     }
 }
+
+if (!function_exists('show_error')) {
+    function show_error($message) {
+        require_once SYSPATH . 'core/Error_Controller.php';
+        $error = new Error_Controller();
+        $error->show_general($message);
+        exit();
+    }
+}
+
+if (!function_exists('show_404')) {
+    function show_404() {
+        require_once SYSPATH . 'core/Error_Controller.php';
+        $error = new Error_Controller();
+        $error->show_404();
+        exit();
+    }
+}

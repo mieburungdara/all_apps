@@ -46,10 +46,10 @@ class Router {
                 if (method_exists($controller_instance, $this->method)) {
                     call_user_func_array([$controller_instance, $this->method], $this->params);
                 } else {
-                    echo "Method '{$this->method}' not found in controller '{$this->controller}'.";
+                    show_404();
                 }
             } else {
-                echo "Controller class '{$this->controller}' not found.";
+                show_404();
             }
         } else {
             // Default to dashboard if controller not found
@@ -66,7 +66,7 @@ class Router {
             $controller_instance = new Dashboard($module_path, 'index');
             $controller_instance->index();
         } else {
-            echo "Default controller not found!";
+            show_error('Default controller (Dashboard) not found.');
         }
     }
 }
