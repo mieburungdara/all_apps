@@ -1,0 +1,7 @@
+RewriteEngine On
+RewriteBase /
+
+# Rewrite application URLs
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(sekolah|rumahsakit)/(.*)$ applications/$1/index.php?/$2 [L]
