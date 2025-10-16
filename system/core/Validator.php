@@ -61,12 +61,31 @@ class Validator {
                     $this->add_error($field, $message);
                 }
                 break;
-            case 'unique':
+            case 'is_unique':
                 $this->load_db();
-                list($table, $column) = explode('.', $param);
-                $result = $this->db->get($table, [$column => $value]);
+                $params = explode('.', $param);
+                $table = $params[0];
+                $column = $params[1];
+                $ignore_col = $params[2] ?? null;
+                $ignore_val = $params[3] ?? null;
+
+                $where = [$column => $value];
+                if ($ignore_col && $ignore_val) {
+                    // This is a hacky way to add a NOT EQUAL condition.
+                    // We should improve the base Model's get() method later.
+                    // For now, this will work by manually adding to the where clause.
+                    // This is not implemented yet, we will do it when we build the profile update page.
+                }
+
+                $result = $this->db->get($table, $where);
+
                 if (!empty($result)) {
-                    $this->add_error($field, $message);
+                    // If we are in an update case, we need to check if the found record is the one we are editing
+                    if ($ignore_val && $result[0][$ignore_col] == $ignore_val) {
+                        // It's the same record, so it's not a duplicate
+                    } else {
+                        $this->add_error($field, $message);
+                    }
                 }
                 break;
             case 'numeric':

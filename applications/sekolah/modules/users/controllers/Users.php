@@ -16,7 +16,7 @@ class Users extends Controller {
 
             $rules = [
                 'nama' => 'required|alpha_space|min_length[3]',
-                'email' => 'required|email|unique[users.email]',
+                'email' => 'required|email|is_unique[users.email]',
                 'password' => 'required|min_length[6]',
                 'password_confirm' => 'required|matches[password]'
             ];
