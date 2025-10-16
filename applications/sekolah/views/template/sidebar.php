@@ -35,6 +35,12 @@
                   <span class="nav-main-link-name">User Management</span>
                 </a>
               </li>
+              <li class="nav-main-item">
+                <a class="nav-main-link" href="/sekolah/attendance/manage">
+                  <i class="nav-main-link-icon fa fa-tasks"></i>
+                  <span class="nav-main-link-name">Manage Attendance</span>
+                </a>
+              </li>
             </ul>
           </div>
         </div>

@@ -31,4 +31,13 @@ class Attendance_model extends Model {
         // This is a simplified version. A real one might need JOINs.
         return $this->db->get('attendance', [['user_id', '=', $user_id]], false, $limit, $offset);
     }
+
+    public function get_all_attendance_with_users($limit = 20, $offset = 0) {
+        $sql = "SELECT a.*, u.nama as user_name FROM attendance a JOIN users u ON a.user_id = u.id ORDER BY a.date DESC, a.check_in_time DESC LIMIT :limit OFFSET :offset";
+        return $this->db->query($sql, [':limit' => $limit, ':offset' => $offset]);
+    }
+
+    public function get_total_all_attendance_count() {
+        return $this->db->count('attendance');
+    }
 }
