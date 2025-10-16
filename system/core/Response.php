@@ -2,16 +2,24 @@
 
 class Response {
 
+    public function set_status_code($code) {
+        http_response_code($code);
+        return $this; // Allow chaining
+    }
+
+    public function set_header($name, $value) {
+        header($name . ': ' . $value);
+        return $this; // Allow chaining
+    }
+
     public function redirect($uri = '') {
-        // For now, we assume the URI is relative to the app root
-        // We can make this smarter later
         header('Location: ' . $uri);
         exit();
     }
 
     public function json($data, $statusCode = 200) {
-        http_response_code($statusCode);
-        header('Content-Type: application/json');
+        $this->set_status_code($statusCode);
+        $this->set_header('Content-Type', 'application/json');
         echo json_encode($data);
         exit();
     }
