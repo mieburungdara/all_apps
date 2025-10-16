@@ -9,6 +9,11 @@ class Users extends Controller {
 
     public function register() {
         if ($this->input->method() == 'POST') {
+            // Validate CSRF token
+            if (!$this->session->validate_csrf_token($this->input->csrf_token())) {
+                die('Invalid CSRF token');
+            }
+
             $data = [
                 'nama' => $this->input->post('nama'),
                 'email' => $this->input->post('email'),
@@ -32,6 +37,11 @@ class Users extends Controller {
 
     public function login() {
         if ($this->input->method() == 'POST') {
+            // Validate CSRF token
+            if (!$this->session->validate_csrf_token($this->input->csrf_token())) {
+                die('Invalid CSRF token');
+            }
+
             $email = $this->input->post('email');
             $password = $this->input->post('password');
 
@@ -57,7 +67,6 @@ class Users extends Controller {
 
     public function logout() {
         $this->session->destroy();
-        // We need to start a new session to store the flash message
         $this->session = Session::getInstance(); 
         $this->session->set_flash('info', 'Anda telah berhasil logout.');
         header('Location: /sekolah/users/login');

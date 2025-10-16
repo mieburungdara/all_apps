@@ -19,3 +19,11 @@ if (!function_exists('asset_url')) {
         return '/' . 'assets/' . ltrim($path, '/');
     }
 }
+
+if (!function_exists('csrf_input')) {
+    function csrf_input() {
+        $session = Session::getInstance();
+        $token = $session->generate_csrf_token();
+        echo '<input type="hidden" name="csrf_token" value="' . $token . '">';
+    }
+}

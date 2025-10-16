@@ -13,6 +13,7 @@ $this->view('templates/auth_header', $data);
 <div class="row g-0 justify-content-center">
     <div class="col-sm-8 col-xl-6">
         <form action="/sekolah/users/login" method="POST">
+            <?php csrf_input(); ?>
             <div class="py-3">
                 <div class="mb-4">
                     <input type="email" class="form-control form-control-lg form-control-alt" id="email" name="email" placeholder="Email">

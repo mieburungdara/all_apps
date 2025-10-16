@@ -46,4 +46,19 @@ class Session {
         }
         return null;
     }
+
+    public function generate_csrf_token() {
+        if (empty($this->get('csrf_token'))) {
+            $token = bin2hex(random_bytes(32));
+            $this->set('csrf_token', $token);
+        }
+        return $this->get('csrf_token');
+    }
+
+    public function validate_csrf_token($token) {
+        $session_token = $this->get('csrf_token');
+        // Invalidate the token after first use for better security
+        $this->set('csrf_token', null);
+        return hash_equals($session_token, $token);
+    }
 }

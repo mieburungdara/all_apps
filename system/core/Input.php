@@ -30,4 +30,8 @@ class Input {
     public function method() {
         return $_SERVER['REQUEST_METHOD'];
     }
+
+    public function csrf_token() {
+        return $this->post('csrf_token');
+    }
 }
