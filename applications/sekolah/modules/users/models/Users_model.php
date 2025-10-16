@@ -3,11 +3,16 @@
 class Users_model extends Model {
 
     public function register_user($data) {
-        // Hash the password for security
         $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
-        
-        // Use the generic insert method from the base Model
-        return $this->insert('users', $data);
+        $this->insert('users', $data);
+        $user_id = $this->db->last_insert_id();
+
+        // Assign default 'user' role
+        $this->load->model('Auth_model');
+        $role_id = $this->Auth_model->create_role('user');
+        $this->Auth_model->assign_role($user_id, $role_id);
+
+        return $user_id;
     }
 
     public function check_login($email, $password) {

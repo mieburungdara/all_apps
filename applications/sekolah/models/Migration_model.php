@@ -11,6 +11,12 @@ class Migration_model extends Model {
         if (!$this->is_table_exists('users')) {
             $this->create_users_table();
         }
+        if (!$this->is_table_exists('roles')) {
+            $this->create_roles_table();
+        }
+        if (!$this->is_table_exists('user_roles')) {
+            $this->create_user_roles_table();
+        }
         // Add other table checks here in the future
     }
 
@@ -21,6 +27,25 @@ class Migration_model extends Model {
             email VARCHAR(255) NOT NULL UNIQUE,
             password VARCHAR(255) NOT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );";
+        $this->db->exec($sql);
+    }
+
+    private function create_roles_table() {
+        $sql = "CREATE TABLE roles (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            role_name VARCHAR(255) NOT NULL UNIQUE
+        );";
+        $this->db->exec($sql);
+    }
+
+    private function create_user_roles_table() {
+        $sql = "CREATE TABLE user_roles (
+            user_id INTEGER NOT NULL,
+            role_id INTEGER NOT NULL,
+            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+            FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE,
+            PRIMARY KEY (user_id, role_id)
         );";
         $this->db->exec($sql);
     }

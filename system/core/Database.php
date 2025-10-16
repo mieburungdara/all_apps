@@ -96,4 +96,14 @@ class Database {
         $stmt->execute($params);
         return $stmt->fetch();
     }
+
+    public function query($sql, $params = []) {
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll();
+    }
+
+    public function last_insert_id() {
+        return $this->db->lastInsertId();
+    }
 }

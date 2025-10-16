@@ -40,12 +40,20 @@ class Installer extends Controller {
     public function admin() {
         if ($this->input->method() == 'POST') {
             $this->load->model('Users_model');
+            $this->load->model('Auth_model');
+
+            // Create user
             $post_data = [
                 'nama' => $this->input->post('nama'),
                 'email' => $this->input->post('email'),
                 'password' => $this->input->post('password')
             ];
-            $this->Users_model->register_user($post_data);
+            $user_id = $this->Users_model->register_user($post_data);
+
+            // Create admin role and assign it
+            $role_id = $this->Auth_model->create_role('admin');
+            $this->Auth_model->assign_role($user_id, $role_id);
+
             $this->response->redirect('/sekolah/installer/finish');
         }
         $this->load->view('install/admin');
