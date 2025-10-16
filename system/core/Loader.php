@@ -29,15 +29,23 @@ class Loader {
         return $instance;
     }
 
-    public function view($view, $data = []) {
-        $CI =& Controller::get_instance();
-        $view_path = $CI->getModulePath() . 'views/' . $view . '.php';
+    public function view($view, $data = [], $use_template = true) {
+        $view_path = $this->module_path . 'views/' . $view . '.php';
 
         if (file_exists($view_path)) {
             extract($data);
-            require $view_path;
+
+            if ($use_template) {
+                require_once APPPATH . 'views/template/header.php';
+                require_once APPPATH . 'views/template/sidebar.php';
+                require_once APPPATH . 'views/template/topbar.php';
+                require_once $view_path;
+                require_once APPPATH . 'views/template/footer.php';
+            } else {
+                require_once $view_path;
+            }
         } else {
-            show_error("View file not found: {$view_path}");
+            show_error("Unable to load the requested file: " . $view . ".php");
         }
     }
 

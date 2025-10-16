@@ -30,4 +30,8 @@ class Users_model extends Model {
     public function get_user_by_email($email) {
         return $this->get('users', [['email', '=', $email]], true);
     }
+
+    public function get_user_by_id($id) {
+        return $this->get('users', [['id', '=', $id]], true);
+    }
 }

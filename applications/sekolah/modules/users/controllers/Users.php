@@ -80,4 +80,15 @@ class Users extends Controller {
         $this->session->set_flash('info', 'Anda telah berhasil logout.');
         $this->response->redirect('/sekolah/users/login');
     }
+
+    public function dashboard() {
+        $this->_auth_check();
+        $data['title'] = 'User Dashboard';
+        $this->load->view('users/dashboard', $data);
+    }
+        $this->session->destroy();
+        $this->session = Session::getInstance(); 
+        $this->session->set_flash('info', 'Anda telah berhasil logout.');
+        $this->response->redirect('/sekolah/users/login');
+    }
 }
