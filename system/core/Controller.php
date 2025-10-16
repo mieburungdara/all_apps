@@ -6,10 +6,15 @@ class Controller {
     protected $input;
     protected $session;
 
-    public function __construct($module_path) {
+    public function __construct($module_path, $called_method) {
         $this->module_path = $module_path;
         $this->input = Input::getInstance();
         $this->session = Session::getInstance();
+
+        // Check if the called method requires authentication
+        if (isset($this->protected_methods) && in_array($called_method, $this->protected_methods)) {
+            $this->_auth_check();
+        }
     }
 
     public function load_view($view, $data = []) {

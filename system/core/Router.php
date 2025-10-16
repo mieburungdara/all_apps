@@ -41,7 +41,7 @@ class Router {
             require_once $controller_path;
 
             if (class_exists($this->controller)) {
-                $controller_instance = new $this->controller($module_path);
+                $controller_instance = new $this->controller($module_path, $this->method);
 
                 if (method_exists($controller_instance, $this->method)) {
                     call_user_func_array([$controller_instance, $this->method], $this->params);
@@ -63,7 +63,7 @@ class Router {
 
         if (file_exists($controller_path)) {
             require_once $controller_path;
-            $controller_instance = new Dashboard($module_path);
+            $controller_instance = new Dashboard($module_path, 'index');
             $controller_instance->index();
         } else {
             echo "Default controller not found!";

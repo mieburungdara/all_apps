@@ -2,8 +2,8 @@
 
 class Users extends Controller {
 
-    public function __construct($module_path) {
-        parent::__construct($module_path);
+    public function __construct($module_path, $called_method) {
+        parent::__construct($module_path, $called_method);
         $this->load_model('Users_model');
     }
 
