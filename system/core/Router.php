@@ -59,9 +59,13 @@ class Router {
                 if (method_exists($controller_instance, $this->method)) {
                     call_user_func_array([$controller_instance, $this->method], $this->params);
                 } else {
+                    $log = Log::getInstance();
+                    $log->error("404 Not Found: Method '{$this->method}' not found in controller '{$this->controller}'.");
                     show_404();
                 }
             } else {
+                $log = Log::getInstance();
+                $log->error("404 Not Found: Controller class '{$this->controller}' not found in file '{$controller_path}'.");
                 show_404();
             }
         } else {

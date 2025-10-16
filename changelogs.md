@@ -74,3 +74,4 @@
 - Enhanced `Model::get()` to support flexible where clauses with different operators.
 - Refactored `Model::update()` to use the new flexible where clause format.
 - Updated `todo.md` with more detailed future tasks.
+- The `Router` now logs a detailed error message before triggering a 404 page.
