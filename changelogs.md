@@ -107,6 +107,7 @@
 - Added the initial version of the Attendance module with check-in/check-out functionality.
 - Added an admin-only page to manage and view all user attendance records.
 - Admins can now edit and delete attendance records.
+- Added a `superadmin` role with unrestricted access.
 
 ### Changed
 - The user attendance page now displays a history of the user's past attendance.

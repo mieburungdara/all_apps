@@ -50,11 +50,16 @@ class Installer extends Controller {
                 'email' => $this->input->post('email'),
                 'password' => $this->input->post('password')
             ];
+            // Note: register_user automatically assigns the 'user' role.
             $user_id = $this->Users_model->register_user($post_data);
 
-            // Create admin role and assign it
-            $role_id = $this->Auth_model->create_role('admin');
-            $this->Auth_model->assign_role($user_id, $role_id);
+            // Create default roles and assign superadmin
+            $this->Auth_model->create_role('superadmin');
+            $this->Auth_model->create_role('admin');
+            $superadmin_role_id = $this->Auth_model->create_role('superadmin'); // Re-calling ensures we get the ID
+            
+            // We need to update the user's roles, not just add a new one.
+            $this->Auth_model->update_user_roles($user_id, [$superadmin_role_id]);
 
             $this->response->redirect('/sekolah/installer/finish');
         }

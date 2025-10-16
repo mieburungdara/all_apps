@@ -38,6 +38,11 @@ class Controller {
         $user_id = $this->session->get('user_id');
         $this->load->model('Auth_model');
 
+        // Superadmin has unrestricted access
+        if ($this->Auth_model->user_has_role($user_id, 'superadmin')) {
+            return;
+        }
+
         foreach ($required_roles as $role) {
             if ($this->Auth_model->user_has_role($user_id, $role)) {
                 return; // User has at least one of the required roles
