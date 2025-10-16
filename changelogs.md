@@ -18,6 +18,7 @@
     - `core/helpers.php`: A file for global helper functions like `base_url()` and `asset_url()`.
     - `core/Error_Controller.php`: A system controller for displaying error pages.
     - `core/Log.php`: A library for writing leveled log messages to files.
+    - `core/Validator.php`: A class to handle data validation rules.
 - **School Application (`applications/sekolah/`):**
     - `index.php`: Application entry point.
     - `config/database.php`: Application-specific database configuration file.
@@ -50,3 +51,5 @@
 - Made error helpers (`show_error`, `show_404`) dynamically resolve the application path, removing the hardcoded path.
 - Refactored `base_url()` helper to auto-detect the URL, removing the need for a config file.
 - Refactored `asset_url()` to be based on a new root-level `base_url()` helper, making it robust for any subdirectory.
+- Integrated a new `Validator` class into the `Input` library.
+- Refactored the user registration process to use the new validation system.

@@ -8,36 +8,44 @@ class Users extends Controller {
     }
 
     public function register() {
+        $data = [];
         if ($this->input->method() == 'POST') {
-            // Validate CSRF token
             if (!$this->session->validate_csrf_token($this->input->csrf_token())) {
                 show_error('Invalid CSRF token. Please try submitting the form again.');
             }
 
-            $data = [
-                'nama' => $this->input->post('nama'),
-                'email' => $this->input->post('email'),
-                'password' => $this->input->post('password')
+            $rules = [
+                'nama' => 'required|min_length[3]',
+                'email' => 'required|email',
+                'password' => 'required|min_length[6]'
             ];
 
-            if ($this->Users_model->register_user($data)) {
-                $this->session->set_flash('success', 'Registrasi berhasil! Silakan login.');
-                header('Location: /sekolah/users/login');
-                exit();
+            if ($this->input->validate($rules)) {
+                $post_data = [
+                    'nama' => $this->input->post('nama'),
+                    'email' => $this->input->post('email'),
+                    'password' => $this->input->post('password')
+                ];
+
+                if ($this->Users_model->register_user($post_data)) {
+                    $this->session->set_flash('success', 'Registrasi berhasil! Silakan login.');
+                    header('Location: /sekolah/users/login');
+                    exit();
+                } else {
+                    $this->session->set_flash('error', 'Registrasi gagal. Email mungkin sudah digunakan.');
+                }
             } else {
-                $this->session->set_flash('error', 'Registrasi gagal. Email mungkin sudah digunakan.');
-                header('Location: /sekolah/users/register');
-                exit();
+                // Pass errors to the view
+                $data['errors'] = $this->input->get_errors();
             }
-        } else {
-            $data['__module_path'] = $this->module_path;
-            $this->load->view('users/register', $data);
         }
+        
+        $data['__module_path'] = $this->module_path;
+        $this->load->view('users/register', $data);
     }
 
     public function login() {
         if ($this->input->method() == 'POST') {
-            // Validate CSRF token
             if (!$this->session->validate_csrf_token($this->input->csrf_token())) {
                 show_error('Invalid CSRF token. Please try submitting the form again.');
             }

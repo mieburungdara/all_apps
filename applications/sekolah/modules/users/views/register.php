@@ -16,13 +16,22 @@ $this->view('templates/auth_header', $data);
             <?php csrf_input(); ?>
             <div class="py-3">
                 <div class="mb-4">
-                    <input type="text" class="form-control form-control-lg form-control-alt" id="nama" name="nama" placeholder="Nama Lengkap">
+                    <input type="text" class="form-control form-control-lg form-control-alt <?php echo isset($errors['nama']) ? 'is-invalid' : ''; ?>" id="nama" name="nama" placeholder="Nama Lengkap" value="<?php echo $this->input->post('nama'); ?>">
+                    <?php if (isset($errors['nama'])): ?>
+                        <div class="invalid-feedback"><?php echo $errors['nama'][0]; ?></div>
+                    <?php endif; ?>
                 </div>
                 <div class="mb-4">
-                    <input type="email" class="form-control form-control-lg form-control-alt" id="email" name="email" placeholder="Email">
+                    <input type="email" class="form-control form-control-lg form-control-alt <?php echo isset($errors['email']) ? 'is-invalid' : ''; ?>" id="email" name="email" placeholder="Email" value="<?php echo $this->input->post('email'); ?>">
+                    <?php if (isset($errors['email'])): ?>
+                        <div class="invalid-feedback"><?php echo $errors['email'][0]; ?></div>
+                    <?php endif; ?>
                 </div>
                 <div class="mb-4">
-                    <input type="password" class="form-control form-control-lg form-control-alt" id="password" name="password" placeholder="Password">
+                    <input type="password" class="form-control form-control-lg form-control-alt <?php echo isset($errors['password']) ? 'is-invalid' : ''; ?>" id="password" name="password" placeholder="Password">
+                    <?php if (isset($errors['password'])): ?>
+                        <div class="invalid-feedback"><?php echo $errors['password'][0]; ?></div>
+                    <?php endif; ?>
                 </div>
             </div>
             <div class="mb-4">

@@ -3,8 +3,12 @@
 class Input {
 
     private static $instance = null;
+    private $validator;
 
-    private function __construct() {}
+    private function __construct() {
+        require_once SYSPATH . 'core/Validator.php';
+        $this->validator = new Validator();
+    }
 
     public static function getInstance() {
         if (self::$instance == null) {
@@ -33,5 +37,14 @@ class Input {
 
     public function csrf_token() {
         return $this->post('csrf_token');
+    }
+
+    public function validate($rules) {
+        $data = $this->post(); // Get all POST data
+        return $this->validator->validate($data, $rules);
+    }
+
+    public function get_errors() {
+        return $this->validator->get_errors();
     }
 }
