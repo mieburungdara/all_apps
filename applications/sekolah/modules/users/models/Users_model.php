@@ -25,15 +25,4 @@ class Users_model extends Model {
     public function get_user_by_email($email) {
         return $this->get('users', [['email', '=', $email]], true);
     }
-
-    public function create_schema() {
-        $sql = "CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nama VARCHAR(255) NOT NULL,
-            email VARCHAR(255) NOT NULL UNIQUE,
-            password VARCHAR(255) NOT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        );";
-        $this->db->exec($sql);
-    }
 }

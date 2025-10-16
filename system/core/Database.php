@@ -90,4 +90,8 @@ class Database {
     public function exec($sql) {
         return $this->db->exec($sql);
     }
+
+    public function prepare($sql) {
+        return $this->db->prepare($sql);
+    }
 }

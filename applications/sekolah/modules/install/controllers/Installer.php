@@ -32,8 +32,8 @@ class Installer extends Controller {
     
     public function run_migration()
     {
-        $this->load->model('Users_model');
-        $this->Users_model->create_schema();
+        $this->load->model('Migration_model');
+        $this->Migration_model->run_migrations();
         $this->response->redirect('/sekolah/installer/admin');
     }
 
