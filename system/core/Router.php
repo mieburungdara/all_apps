@@ -6,17 +6,30 @@ class Router {
     protected $controller = 'Dashboard';
     protected $method = 'index';
     protected $params = [];
+    protected $routes = [];
 
     public function __construct() {
+        $this->load_routes();
         $this->parseUrl();
         $this->dispatch();
     }
 
+    private function load_routes() {
+        $config = Config::getInstance();
+        $this->routes = $config->load('routes');
+    }
+
     public function parseUrl() {
-        if (isset($_SERVER['QUERY_STRING'])) {
-            $url = trim($_SERVER['QUERY_STRING'], '/');
-            $url = filter_var($url, FILTER_SANITIZE_URL);
-            $segments = explode('/', $url);
+        $url = $_SERVER['QUERY_STRING'] ?? '';
+
+        // Check for custom route
+        if (isset($this->routes[$url])) {
+            $url = $this->routes[$url];
+        }
+
+        $url = trim($url, '/');
+        $url = filter_var($url, FILTER_SANITIZE_URL);
+        $segments = explode('/', $url);
 
             if (!empty($segments[0])) {
                 $this->module = $segments[0];

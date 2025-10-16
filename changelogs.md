@@ -33,7 +33,18 @@
     - `changelogs.md`: This file, to track project changes.
     - `todo.md`: A file to track the project roadmap and future tasks.
 
+### Added
+- **Core Framework (in `system/`):**
+    - `core/Database.php`: A new singleton library to handle all database operations, separating it from the base Model.
+    - `core/Response.php`: A new library to standardize controller outputs like redirects and JSON.
+- **Documentation:**
+    - `system/README.md`: Documentation for the core framework libraries.
+
 ### Changed
+- **Architecture Refactoring:**
+    - The base `Model` is now a thin layer that provides access to the `Database` library.
+    - The `Router` now supports custom routes from a `config/routes.php` file.
+    - Controllers now use `$this->response->redirect()` instead of `header()`.
 - **Switched to SQLite:** The framework now uses SQLite for easier portability and backup.
     - The base `Model` now connects to a SQLite database.
     - Application database configuration is now simplified for SQLite.
