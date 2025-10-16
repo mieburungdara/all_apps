@@ -2,10 +2,16 @@
 
 if (!function_exists('base_url')) {
     function base_url($uri = '') {
-        $config = Config::getInstance();
-        $app_config = $config->load('app');
-        $base_url = $app_config['base_url'];
-        return rtrim($base_url, '/') . '/' . ltrim($uri, '/');
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https://' : 'http://';
+        $host = $_SERVER['HTTP_HOST'];
+        $script_name = str_replace('\\ ', '/', dirname($_SERVER['SCRIPT_NAME']));
+        
+        // If the script is in the root, the path is just a slash, otherwise, add a trailing slash.
+        $path = ($script_name === '/') ? '/' : rtrim($script_name, '/') . '/';
+
+        $full_base_url = $protocol . $host . $path;
+
+        return rtrim($full_base_url, '/') . '/' . ltrim($uri, '/');
     }
 }
 

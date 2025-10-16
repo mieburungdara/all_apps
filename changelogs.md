@@ -48,3 +48,4 @@
 - Enhanced `Log` library to automatically include file, line, and function details in messages.
 - Refactored `Error_Controller` to use a themed view, providing a consistent UI for errors.
 - Made error helpers (`show_error`, `show_404`) dynamically resolve the application path, removing the hardcoded path.
+- Refactored `base_url()` helper to auto-detect the URL, removing the need for a config file.
