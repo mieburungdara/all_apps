@@ -7,7 +7,6 @@ class Users extends Controller {
         $this->load_model('Users_model');
     }
 
-    // Display the registration page
     public function register() {
         if ($this->input->method() == 'POST') {
             $data = [
@@ -27,7 +26,6 @@ class Users extends Controller {
         }
     }
 
-    // Display the login page
     public function login() {
         if ($this->input->method() == 'POST') {
             $email = $this->input->post('email');
@@ -36,15 +34,25 @@ class Users extends Controller {
             $user = $this->Users_model->check_login($email, $password);
 
             if ($user) {
-                // Handle successful login (we need sessions for this!)
-                echo "Login successful! Welcome, " . $user['nama'];
-                // For now, just show a success message.
-                // Later, we will start a session here.
+                // Set user data in session
+                $this->session->set('user_id', $user['id']);
+                $this->session->set('user_nama', $user['nama']);
+
+                // Redirect to the main dashboard
+                header('Location: /sekolah/dashboard');
+                exit();
             } else {
+                // TODO: Show error message on the login page
                 echo "Login failed! Invalid email or password.";
             }
         } else {
             $this->load_view('login');
         }
+    }
+
+    public function logout() {
+        $this->session->destroy();
+        header('Location: /sekolah/users/login');
+        exit();
     }
 }

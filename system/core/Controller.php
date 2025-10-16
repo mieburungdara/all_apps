@@ -4,10 +4,12 @@ class Controller {
 
     protected $module_path;
     protected $input;
+    protected $session;
 
     public function __construct($module_path) {
         $this->module_path = $module_path;
         $this->input = Input::getInstance();
+        $this->session = Session::getInstance();
     }
 
     public function load_view($view, $data = []) {
