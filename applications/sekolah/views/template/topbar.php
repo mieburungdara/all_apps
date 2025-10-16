@@ -14,6 +14,10 @@
               </button>
               <div class="dropdown-menu dropdown-menu-end p-0" aria-labelledby="page-header-user-dropdown">
                 <div class="p-2">
+                  <a class="dropdown-item" href="/sekolah/users/profile">
+                    <i class="far fa-fw fa-user-circle me-1"></i> My Profile
+                  </a>
+                  <div role="separator" class="dropdown-divider"></div>
                   <a class="dropdown-item" href="/sekolah/users/logout">
                     <i class="far fa-fw fa-arrow-alt-circle-left me-1"></i> Sign Out
                   </a>

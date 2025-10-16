@@ -48,9 +48,51 @@ class Users extends Controller {
 
     public function logout() {
         $this->session->destroy();
-        $this->session = Session::getInstance(); 
-        $this->session->set_flash('info', 'Anda telah berhasil logout.');
         $this->response->redirect('/sekolah/users/login');
+    }
+
+    public function profile() {
+        $this->_auth_check();
+        $user_id = $this->session->get('user_id');
+
+        if ($this->input->method() === 'POST') {
+            $action = $this->input->post('action');
+
+            if ($action === 'update_profile') {
+                $rules = [
+                    'nama' => 'required|alpha_space',
+                    'email' => 'required|email|is_unique[users.email.id.' . $user_id . ']',
+                ];
+        
+                if (!empty($this->input->post('password'))) {
+                    $rules['password'] = 'min_length[8]';
+                }
+
+                if (!$this->input->validate($rules)) {
+                    $this->session->set_flash('errors', $this->input->get_errors());
+                    $this->session->set_old_input($this->input->post());
+                } else {
+                    $user_data = [
+                        'nama' => $this->input->post('nama'),
+                        'email' => $this->input->post('email'),
+                        'password' => $this->input->post('password'),
+                    ];
+                    $this->Users_model->update_user($user_id, $user_data);
+                    $this->session->set_flash('success', 'Profile updated successfully!');
+                }
+
+            } elseif ($action === 'regenerate_key') {
+                $this->Users_model->regenerate_api_key($user_id);
+                $this->session->set_flash('success', 'API Key regenerated successfully!');
+            }
+            
+            $this->response->redirect('/sekolah/users/profile');
+            return;
+        }
+
+        $data['title'] = 'My Profile';
+        $data['user'] = $this->Users_model->get_user_by_id($user_id);
+        $this->load->view('users/profile', $data);
     }
 
     public function dashboard() {

@@ -60,4 +60,9 @@ class Users_model extends Model {
     public function delete_user($id) {
         return $this->delete('users', [['id', '=', $id]]);
     }
+
+    public function regenerate_api_key($user_id) {
+        $new_key = bin2hex(random_bytes(32));
+        return $this->update('users', ['api_key' => $new_key], [['id', '=', $user_id]]);
+    }
 }
