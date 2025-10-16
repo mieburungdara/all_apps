@@ -34,7 +34,19 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 
 
 // Load helper functions
-require_once __DIR__ . '/core/helpers.php';
+function show_error($message) {
+    // In a real app, you'd load a view and log the error.
+    // For now, just die.
+    die($message);
+}
+
+function show_404() {
+    http_response_code(404);
+    require_once APPPATH . 'modules/errors/controllers/Errors.php';
+    $errors = new Errors(APPPATH . 'modules/errors/', 'show_404');
+    $errors->show_404();
+    exit;
+}
 
 // Autoloader
 spl_autoload_register(function ($class) {

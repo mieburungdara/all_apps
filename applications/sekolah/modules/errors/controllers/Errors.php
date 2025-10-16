@@ -15,6 +15,6 @@ class Errors extends Controller {
     public function show_404() {
         // Set HTTP status code
         http_response_code(404);
-        $this->load->view('errors/404');
+        $this->load->view('errors/404', [], null);
     }
 }

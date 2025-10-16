@@ -93,3 +93,4 @@
 - Integrated Dashmix theme as the main application layout.
 - Refactored auth and installer pages to match the Dashmix theme.
 - Added a user management CRUD interface to the admin area.
+- Added a dedicated 404 Not Found error page.
