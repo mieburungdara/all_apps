@@ -23,31 +23,54 @@ if (!function_exists('csrf_input')) {
     }
 }
 
+if (!function_exists('_resolve_app_path')) {
+    function _resolve_app_path() {
+        if (defined('APPPATH')) {
+            return true;
+        }
+
+        $uri_segments = explode('/', trim($_SERVER['REQUEST_URI'], '/'));
+        $app_name = $uri_segments[0] ?? '';
+
+        $potential_app_path = realpath(__DIR__ . '/../../applications/' . $app_name);
+
+        if ($app_name && $potential_app_path) {
+            define('APPPATH', $potential_app_path . '/');
+            return true;
+        }
+
+        return false;
+    }
+}
+
 if (!function_exists('show_error')) {
     function show_error($message) {
-        // This is a hack. We need a better way to determine the current application.
-        if (!defined('APPPATH')) {
-            define('APPPATH', realpath(__DIR__ . '/../../applications/sekolah') . '/');
+        if (_resolve_app_path()) {
+            require_once SYSPATH . 'core/Controller.php';
+            require_once SYSPATH . 'core/Loader.php';
+            require_once SYSPATH . 'core/Error_Controller.php';
+            $error = new Error_Controller();
+            $error->show_general($message);
+        } else {
+            http_response_code(500);
+            echo "A critical error occurred outside of a valid application context: " . htmlspecialchars($message);
         }
-        require_once SYSPATH . 'core/Controller.php'; // Error controller extends this
-        require_once SYSPATH . 'core/Loader.php'; // Controller uses this
-        require_once SYSPATH . 'core/Error_Controller.php';
-        $error = new Error_Controller();
-        $error->show_general($message);
         exit();
     }
 }
 
 if (!function_exists('show_404')) {
     function show_404() {
-        if (!defined('APPPATH')) {
-            define('APPPATH', realpath(__DIR__ . '/../../applications/sekolah') . '/');
+        if (_resolve_app_path()) {
+            require_once SYSPATH . 'core/Controller.php';
+            require_once SYSPATH . 'core/Loader.php';
+            require_once SYSPATH . 'core/Error_Controller.php';
+            $error = new Error_Controller();
+            $error->show_404();
+        } else {
+            http_response_code(404);
+            echo "404 Not Found";
         }
-        require_once SYSPATH . 'core/Controller.php';
-        require_once SYSPATH . 'core/Loader.php';
-        require_once SYSPATH . 'core/Error_Controller.php';
-        $error = new Error_Controller();
-        $error->show_404();
         exit();
     }
 }
