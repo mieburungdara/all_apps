@@ -28,7 +28,33 @@ class Migration_model extends Model {
         if (!$this->is_table_exists('attendance')) {
             $this->create_attendance_table();
         }
+        if (!$this->is_table_exists('permissions')) {
+            $this->create_permissions_table();
+        }
+        if (!$this->is_table_exists('role_permissions')) {
+            $this->create_role_permissions_table();
+        }
         // Add other table checks here in the future
+    }
+
+    private function create_permissions_table() {
+        $sql = "CREATE TABLE permissions (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            permission_name VARCHAR(255) NOT NULL UNIQUE,
+            description TEXT NULL
+        );";
+        $this->db->exec($sql);
+    }
+
+    private function create_role_permissions_table() {
+        $sql = "CREATE TABLE role_permissions (
+            role_id INTEGER NOT NULL,
+            permission_id INTEGER NOT NULL,
+            FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE,
+            FOREIGN KEY (permission_id) REFERENCES permissions(id) ON DELETE CASCADE,
+            PRIMARY KEY (role_id, permission_id)
+        );";
+        $this->db->exec($sql);
     }
 
     private function create_attendance_table() {

@@ -50,15 +50,27 @@ class Installer extends Controller {
                 'email' => $this->input->post('email'),
                 'password' => $this->input->post('password')
             ];
-            // Note: register_user automatically assigns the 'user' role.
             $user_id = $this->Users_model->register_user($post_data);
 
-            // Create default roles and assign superadmin
-            $this->Auth_model->create_role('superadmin');
-            $this->Auth_model->create_role('admin');
-            $superadmin_role_id = $this->Auth_model->create_role('superadmin'); // Re-calling ensures we get the ID
-            
-            // We need to update the user's roles, not just add a new one.
+            // Create default roles
+            $superadmin_role_id = $this->Auth_model->create_role('superadmin');
+            $admin_role_id = $this->Auth_model->create_role('admin');
+            $this->Auth_model->create_role('user');
+
+            // Create default permissions
+            $perm_manage_users = $this->Auth_model->create_permission('users.manage', 'Manage all users');
+            $perm_manage_attendance = $this->Auth_model->create_permission('attendance.manage', 'Manage all attendance records');
+            $perm_view_own_attendance = $this->Auth_model->create_permission('attendance.view_own', 'View own attendance');
+
+            // Assign permissions to roles
+            // Admin can manage users and attendance
+            $this->Auth_model->assign_permission_to_role($perm_manage_users, $admin_role_id);
+            $this->Auth_model->assign_permission_to_role($perm_manage_attendance, $admin_role_id);
+
+            // User can only view their own attendance
+            $this->Auth_model->assign_permission_to_role($perm_view_own_attendance, $this->Auth_model->get_role_by_name('user')['id']);
+
+            // Assign superadmin role to the first user
             $this->Auth_model->update_user_roles($user_id, [$superadmin_role_id]);
 
             $this->response->redirect('/sekolah/installer/finish');

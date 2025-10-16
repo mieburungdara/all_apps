@@ -37,7 +37,7 @@ class Attendance extends Controller {
     }
 
     public function manage() {
-        $this->_authorize(['admin']);
+        $this->_authorize('attendance.manage');
 
         $page = (int)($this->input->get('page', 1));
         $limit = 15;

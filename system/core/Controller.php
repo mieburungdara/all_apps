@@ -32,24 +32,17 @@ class Controller {
         }
     }
 
-    protected function _authorize(array $required_roles) {
+    protected function _authorize(string $required_permission) {
         $this->_auth_check(); // Ensure user is logged in first
 
         $user_id = $this->session->get('user_id');
         $this->load->model('Auth_model');
 
-        // Superadmin has unrestricted access
-        if ($this->Auth_model->user_has_role($user_id, 'superadmin')) {
-            return;
+        if ($this->Auth_model->has_permission($user_id, $required_permission)) {
+            return; // User has the required permission
         }
 
-        foreach ($required_roles as $role) {
-            if ($this->Auth_model->user_has_role($user_id, $role)) {
-                return; // User has at least one of the required roles
-            }
-        }
-
-        // If we get here, user does not have any of the required roles
+        // If we get here, user does not have the required permission
         $this->response->redirect('/sekolah/errors/show_403');
     }
 
