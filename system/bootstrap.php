@@ -1,5 +1,8 @@
 <?php
 
+// Load helper functions
+require_once __DIR__ . '/core/helpers.php';
+
 // Autoloader
 spl_autoload_register(function ($class) {
     // Core classes

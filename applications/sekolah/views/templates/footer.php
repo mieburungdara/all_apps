@@ -13,6 +13,6 @@
     </div>
     <!-- END Page Container -->
 
-    <script src="/assets/js/dashmix.app.min.js"></script>
+    <script src="<?php echo asset_url('js/dashmix.app.min.js'); ?>"></script>
   </body>
 </html>

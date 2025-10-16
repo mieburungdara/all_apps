@@ -7,23 +7,22 @@ $page_title = $page_title ?? 'Authentication';
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title><?php echo htmlspecialchars($page_title); ?></title>
-    <link rel="shortcut icon" href="/assets/media/favicons/favicon.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="/assets/media/favicons/favicon-192x192.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/assets/media/favicons/apple-touch-icon-180x180.png">
-    <link rel="stylesheet" id="css-main" href="/assets/css/dashmix.min.css">
-    <link rel="stylesheet" id="css-theme" href="/assets/css/themes/xdream.min.css">
-    <script src="/assets/js/setTheme.js"></script>
+    <link rel="shortcut icon" href="<?php echo asset_url('media/favicons/favicon.png'); ?>">
+    <link rel="icon" type="image/png" sizes="192x192" href="<?php echo asset_url('media/favicons/favicon-192x192.png'); ?>">
+    <link rel="apple-touch-icon" sizes="180x180" href="<?php echo asset_url('media/favicons/apple-touch-icon-180x180.png'); ?>">
+    <link rel="stylesheet" id="css-main" href="<?php echo asset_url('css/dashmix.min.css'); ?>">
+    <link rel="stylesheet" id="css-theme" href="<?php echo asset_url('css/themes/xdream.min.css'); ?>">
+    <script src="<?php echo asset_url('js/setTheme.js'); ?>"></script>
   </head>
   <body>
     <div id="page-container">
       <main id="main-container">
-        <div class="bg-image" style="background-image: url('/assets/media/photos/photo22@2x.jpg');">
+        <div class="bg-image" style="background-image: url('<?php echo asset_url("media/photos/photo22@2x.jpg"); ?>');">
           <div class="row g-0 bg-primary-op">
             <div class="hero-static col-md-6 d-flex align-items-center bg-body-extra-light">
               <div class="p-3 w-100">
 
                 <?php 
-                // Since this is a generic template, we need to get the session instance
                 $session = Session::getInstance();
                 if ($session->has_flash('success')): ?>
                     <div class="alert alert-success" role="alert">

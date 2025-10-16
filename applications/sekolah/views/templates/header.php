@@ -1,5 +1,4 @@
 <?php
-// You can pass variables to the header, for example, the page title
 $page_title = $page_title ?? 'Dashboard';
 ?>
 <!doctype html>
@@ -7,32 +6,21 @@ $page_title = $page_title ?? 'Dashboard';
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-
     <title><?php echo htmlspecialchars($page_title); ?></title>
-
     <meta name="description" content="Your Application Description">
     <meta name="author" content="Your Name">
     <meta name="robots" content="noindex, nofollow">
-
-    <!-- Icons -->
-    <link rel="shortcut icon" href="/assets/media/favicons/favicon.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="/assets/media/favicons/favicon-192x192.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/assets/media/favicons/apple-touch-icon-180x180.png">
-    <!-- END Icons -->
-
-    <!-- Stylesheets -->
-    <link rel="stylesheet" id="css-main" href="/assets/css/dashmix.min.css">
-    <link rel="stylesheet" id="css-theme" href="/assets/css/themes/xdream.min.css">
-    <!-- END Stylesheets -->
-
-    <script src="/assets/js/setTheme.js"></script>
+    <link rel="shortcut icon" href="<?php echo asset_url('media/favicons/favicon.png'); ?>">
+    <link rel="icon" type="image/png" sizes="192x192" href="<?php echo asset_url('media/favicons/favicon-192x192.png'); ?>">
+    <link rel="apple-touch-icon" sizes="180x180" href="<?php echo asset_url('media/favicons/apple-touch-icon-180x180.png'); ?>">
+    <link rel="stylesheet" id="css-main" href="<?php echo asset_url('css/dashmix.min.css'); ?>">
+    <link rel="stylesheet" id="css-theme" href="<?php echo asset_url('css/themes/xdream.min.css'); ?>">
+    <script src="<?php echo asset_url('js/setTheme.js'); ?>"></script>
   </head>
-
   <body>
     <div id="page-container" class="sidebar-o sidebar-dark side-scroll page-header-fixed main-content-boxed">
 
       <?php 
-      // Display flash messages in the main template as well
       if ($this->session->has_flash('success')): ?>
           <div class="alert alert-success m-3" role="alert">
               <?php echo $this->session->get_flash('success'); ?>

@@ -21,7 +21,7 @@
                 <span class="badge rounded-pill bg-success">3</span>
               </button>
               <div class="dropdown-menu dropdown-menu-end dropdown-menu-lg rounded-0 p-0" aria-labelledby="page-header-notifications-dropdown">
-                <div class="bg-image" style="background-image: url('/assets/media/photos/photo25.jpg');">
+                <div class="bg-image" style="background-image: url('<?php echo asset_url("media/photos/photo25.jpg"); ?>');">
                   <div class="bg-primary-op fw-semibold text-white text-center px-3 py-4">
                     <div class="fs-4">Notifications</div>
                   </div>

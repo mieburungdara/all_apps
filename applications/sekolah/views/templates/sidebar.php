@@ -38,7 +38,7 @@ $user_nama = $_SESSION['user_nama'] ?? 'Guest';
           <!-- Side Actions -->
           <div class="content-side content-side-full text-center bg-black-10">
             <div class="smini-hide">
-              <img class="img-avatar" src="/assets/media/avatars/avatar15.jpg" alt="">
+              <img class="img-avatar" src="<?php echo asset_url('media/avatars/avatar15.jpg'); ?>" alt="">
               <div class="mt-2 mb-1 fw-semibold"><?php echo htmlspecialchars($user_nama); ?></div>
               <a class="text-white-50 me-1" href="#">
                 <i class="fa fa-fw fa-user-cog"></i>

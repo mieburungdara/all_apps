@@ -14,8 +14,8 @@
         </div>
       </main>
     </div>
-    <script src="/assets/js/dashmix.app.min.js"></script>
-    <script src="/assets/js/lib/jquery.min.js"></script>
-    <script src="/assets/js/plugins/jquery-validation/jquery.validate.min.js"></script>
+    <script src="<?php echo asset_url('js/dashmix.app.min.js'); ?>"></script>
+    <script src="<?php echo asset_url('js/lib/jquery.min.js'); ?>"></script>
+    <script src="<?php echo asset_url('js/plugins/jquery-validation/jquery.validate.min.js'); ?>"></script>
   </body>
 </html>
