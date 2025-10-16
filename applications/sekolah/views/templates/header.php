@@ -30,3 +30,11 @@ $page_title = $page_title ?? 'Dashboard';
 
   <body>
     <div id="page-container" class="sidebar-o sidebar-dark side-scroll page-header-fixed main-content-boxed">
+
+      <?php 
+      // Display flash messages in the main template as well
+      if ($this->session->has_flash('success')): ?>
+          <div class="alert alert-success m-3" role="alert">
+              <?php echo $this->session->get_flash('success'); ?>
+          </div>
+      <?php endif; ?>

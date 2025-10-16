@@ -16,10 +16,13 @@ class Users extends Controller {
             ];
 
             if ($this->Users_model->register_user($data)) {
+                $this->session->set_flash('success', 'Registrasi berhasil! Silakan login.');
                 header('Location: /sekolah/users/login');
                 exit();
             } else {
-                echo "Registration failed!";
+                $this->session->set_flash('error', 'Registrasi gagal. Email mungkin sudah digunakan.');
+                header('Location: /sekolah/users/register');
+                exit();
             }
         } else {
             $data['__module_path'] = $this->module_path;
@@ -37,12 +40,14 @@ class Users extends Controller {
             if ($user) {
                 $this->session->set('user_id', $user['id']);
                 $this->session->set('user_nama', $user['nama']);
+                $this->session->set_flash('success', 'Selamat datang kembali, ' . $user['nama'] . '!');
 
                 header('Location: /sekolah/dashboard');
                 exit();
             } else {
-                // TODO: Show error message on the login page
-                echo "Login failed! Invalid email or password.";
+                $this->session->set_flash('error', 'Login gagal! Email atau password salah.');
+                header('Location: /sekolah/users/login');
+                exit();
             }
         } else {
             $data['__module_path'] = $this->module_path;
@@ -52,6 +57,9 @@ class Users extends Controller {
 
     public function logout() {
         $this->session->destroy();
+        // We need to start a new session to store the flash message
+        $this->session = Session::getInstance(); 
+        $this->session->set_flash('info', 'Anda telah berhasil logout.');
         header('Location: /sekolah/users/login');
         exit();
     }

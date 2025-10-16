@@ -21,3 +21,20 @@ $page_title = $page_title ?? 'Authentication';
           <div class="row g-0 bg-primary-op">
             <div class="hero-static col-md-6 d-flex align-items-center bg-body-extra-light">
               <div class="p-3 w-100">
+
+                <?php 
+                // Since this is a generic template, we need to get the session instance
+                $session = Session::getInstance();
+                if ($session->has_flash('success')): ?>
+                    <div class="alert alert-success" role="alert">
+                        <?php echo $session->get_flash('success'); ?>
+                    </div>
+                <?php elseif ($session->has_flash('error')): ?>
+                    <div class="alert alert-danger" role="alert">
+                        <?php echo $session->get_flash('error'); ?>
+                    </div>
+                <?php elseif ($session->has_flash('info')): ?>
+                    <div class="alert alert-info" role="alert">
+                        <?php echo $session->get_flash('info'); ?>
+                    </div>
+                <?php endif; ?>
