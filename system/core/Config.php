@@ -3,7 +3,8 @@
 class Config {
 
     private static $instance = null;
-    private $configs = [];
+    private $_loaded_files = [];
+    private $_config = [];
 
     private function __construct() {}
 
@@ -15,19 +16,27 @@ class Config {
     }
 
     public function load($file) {
-        // Check if already loaded
-        if (isset($this->configs[$file])) {
-            return $this->configs[$file];
+        if (isset($this->_loaded_files[$file])) {
+            return $this->_loaded_files[$file];
         }
 
         $config_path = APPPATH . 'config/' . $file . '.php';
 
         if (file_exists($config_path)) {
             $config_data = require $config_path;
-            $this->configs[$file] = $config_data;
+            $this->_loaded_files[$file] = $config_data;
+            $this->_config = array_merge($this->_config, $config_data);
             return $config_data;
         } else {
-            die("Configuration file not found: {$config_path}");
+            show_error("Configuration file not found: {$config_path}");
         }
+    }
+
+    public function item($key, $default = null) {
+        return $this->_config[$key] ?? $default;
+    }
+
+    public function set_item($key, $value) {
+        $this->_config[$key] = $value;
     }
 }

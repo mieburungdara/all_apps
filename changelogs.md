@@ -77,3 +77,4 @@
 - The `Router` now logs a detailed error message before triggering a 404 page.
 - Refactored `Users` controller to reduce code duplication for POST request handling.
 - Implemented lazy loading for core libraries in the `Loader` for better performance.
+- Enhanced `Config` library with dynamic item management (`item()`, `set_item()`) and caching.
