@@ -7,13 +7,19 @@ class Users extends Controller {
         $this->load->model('Users_model', $this);
     }
 
+    private function _is_valid_post() {
+        if ($this->input->method() !== 'POST') {
+            return false;
+        }
+        if (!$this->session->validate_csrf_token($this->input->csrf_token())) {
+            show_error('Invalid CSRF token. Please try submitting the form again.');
+        }
+        return true;
+    }
+
     public function register() {
         $data = [];
-        if ($this->input->method() == 'POST') {
-            if (!$this->session->validate_csrf_token($this->input->csrf_token())) {
-                show_error('Invalid CSRF token. Please try submitting the form again.');
-            }
-
+        if ($this->_is_valid_post()) {
             $rules = [
                 'nama' => 'required|alpha_space|min_length[3]',
                 'email' => 'required|email|is_unique[users.email]',
@@ -45,11 +51,8 @@ class Users extends Controller {
     }
 
     public function login() {
-        if ($this->input->method() == 'POST') {
-            if (!$this->session->validate_csrf_token($this->input->csrf_token())) {
-                show_error('Invalid CSRF token. Please try submitting the form again.');
-            }
-
+        $data = [];
+        if ($this->_is_valid_post()) {
             $email = $this->input->post('email');
             $password = $this->input->post('password');
 
@@ -64,10 +67,10 @@ class Users extends Controller {
                 $this->session->set_flash('error', 'Login gagal! Email atau password salah.');
                 $this->response->redirect('/sekolah/users/login');
             }
-        } else {
-            $data['__module_path'] = $this->module_path;
-            $this->load->view('users/login', $data);
         }
+        
+        $data['__module_path'] = $this->module_path;
+        $this->load->view('users/login', $data);
     }
 
     public function logout() {

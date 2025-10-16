@@ -75,3 +75,4 @@
 - Refactored `Model::update()` to use the new flexible where clause format.
 - Updated `todo.md` with more detailed future tasks.
 - The `Router` now logs a detailed error message before triggering a 404 page.
+- Refactored `Users` controller to reduce code duplication for POST request handling.
