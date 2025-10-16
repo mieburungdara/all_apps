@@ -1,9 +1,6 @@
 <?php
 
-// Database configuration
+// SQLite database configuration
 return [
-    'hostname' => 'localhost',
-    'username' => 'root',
-    'password' => '',
-    'database' => 'sekolah_db',
+    'path' => APPPATH . 'database/sekolah.sqlite'
 ];
