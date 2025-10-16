@@ -4,20 +4,24 @@ if (!function_exists('base_url')) {
     function base_url($uri = '') {
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https://' : 'http://';
         $host = $_SERVER['HTTP_HOST'];
-        $script_name = str_replace('\\ ', '/', dirname($_SERVER['SCRIPT_NAME']));
-        
-        // If the script is in the root, the path is just a slash, otherwise, add a trailing slash.
+        return rtrim($protocol . $host, '/') . '/' . ltrim($uri, '/');
+    }
+}
+
+if (!function_exists('app_url')) {
+    function app_url($uri = '') {
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https://' : 'http://';
+        $host = $_SERVER['HTTP_HOST'];
+        $script_name = str_replace('\ ', '/', dirname($_SERVER['SCRIPT_NAME']));
         $path = ($script_name === '/') ? '/' : rtrim($script_name, '/') . '/';
-
         $full_base_url = $protocol . $host . $path;
-
         return rtrim($full_base_url, '/') . '/' . ltrim($uri, '/');
     }
 }
 
 if (!function_exists('asset_url')) {
     function asset_url($path = '') {
-        return '/' . 'assets/' . ltrim($path, '/');
+        return base_url('assets/' . ltrim($path, '/'));
     }
 }
 
