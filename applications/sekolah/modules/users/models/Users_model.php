@@ -4,6 +4,7 @@ class Users_model extends Model {
 
     public function register_user($data) {
         $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+        $data['api_key'] = bin2hex(random_bytes(32)); // Generate a 64-character hex token
         $this->insert('users', $data);
         $user_id = $this->db->last_insert_id();
 
@@ -33,6 +34,10 @@ class Users_model extends Model {
 
     public function get_user_by_id($id) {
         return $this->get('users', [['id', '=', $id]], true);
+    }
+
+    public function get_user_by_api_key($api_key) {
+        return $this->get('users', [['api_key', '=', $api_key]], true);
     }
 
     public function get_all_users() {

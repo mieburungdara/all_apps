@@ -10,7 +10,15 @@ class Migration_model extends Model {
     public function run_migrations() {
         if (!$this->is_table_exists('users')) {
             $this->create_users_table();
+        } else {
+            // Add api_key column if it doesn't exist
+            try {
+                $this->db->exec("ALTER TABLE users ADD COLUMN api_key VARCHAR(255) NULL UNIQUE");
+            } catch (\Exception $e) {
+                // Ignore error if column already exists
+            }
         }
+
         if (!$this->is_table_exists('roles')) {
             $this->create_roles_table();
         }
@@ -26,6 +34,7 @@ class Migration_model extends Model {
             nama VARCHAR(255) NOT NULL,
             email VARCHAR(255) NOT NULL UNIQUE,
             password VARCHAR(255) NOT NULL,
+            api_key VARCHAR(255) NULL UNIQUE,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );";
         $this->db->exec($sql);

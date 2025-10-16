@@ -95,6 +95,7 @@
 - Added a user management CRUD interface to the admin area.
 - Added a dedicated 404 Not Found error page.
 - Implemented server-side form validation with persistent old input.
+- Added API key authentication via Bearer token.
 
 ### Changed
 - Improved flash message system to be more robust and consistently styled.
