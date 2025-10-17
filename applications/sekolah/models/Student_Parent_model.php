@@ -12,6 +12,19 @@ class Student_Parent_model extends Model {
         return array_column($results, 'id');
     }
 
+    public function is_child_of_parent($student_id, $parent_id) {
+        $count = $this->db->count('student_parent_relations', [
+            ['student_id', '=', $student_id],
+            ['parent_id', '=', $parent_id]
+        ]);
+        return $count > 0;
+    }
+
+    public function get_parents_for_student($student_id) {
+        $sql = "SELECT u.* FROM users u JOIN student_parent_relations spr ON u.id = spr.parent_id WHERE spr.student_id = :student_id";
+        return $this->db->query($sql, [':student_id' => $student_id]);
+    }
+
     public function update_children_for_parent($parent_id, $child_ids) {
         // First, delete existing relationships for the parent
         $this->db->delete('student_parent_relations', [['parent_id', '=', $parent_id]]);

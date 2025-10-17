@@ -19,7 +19,7 @@
                             <td><?= $child['nama'] ?></td>
                             <td><?= $child['email'] ?></td>
                             <td class="text-center">
-                                <a href="#" class="btn btn-sm btn-secondary">View Report</a>
+                                <a href="/sekolah/users/view_child/<?= $child['id'] ?>" class="btn btn-sm btn-secondary">View Report</a>
                             </td>
                         </tr>
                         <?php endforeach; ?>

@@ -105,6 +105,25 @@ class Users extends Controller {
         $this->load->view('users/my_children', $data);
     }
 
+    public function view_child($child_id) {
+        $this->_authorize('student.view_own_child_data');
+        $parent_id = $this->session->get('user_id');
+        $this->load->model('Student_Parent_model');
+
+        // Security check: ensure the requested child belongs to the logged-in parent
+        if (!$this->Student_Parent_model->is_child_of_parent($child_id, $parent_id)) {
+            $this->response->redirect('/sekolah/errors/show_403');
+            return;
+        }
+
+        $this->load->model('Attendance_model');
+        $data['title'] = 'Child Report';
+        $data['child'] = $this->Users_model->get_user_by_id($child_id);
+        $data['attendance_history'] = $this->Attendance_model->get_user_attendance_history($child_id, 30); // Get last 30 records
+
+        $this->load->view('users/view_child_report', $data);
+    }
+
     public function dashboard() {
         $this->_auth_check();
         $data['title'] = 'User Dashboard';

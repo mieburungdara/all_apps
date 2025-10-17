@@ -37,7 +37,22 @@ class Migration_model extends Model {
         if (!$this->is_table_exists('student_parent_relations')) {
             $this->create_student_parent_relations_table();
         }
+        if (!$this->is_table_exists('notifications')) {
+            $this->create_notifications_table();
+        }
         // Add other table checks here in the future
+    }
+
+    private function create_notifications_table() {
+        $sql = "CREATE TABLE notifications (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            recipient_user_id INTEGER NOT NULL,
+            message TEXT NOT NULL,
+            is_read INTEGER NOT NULL DEFAULT 0, -- 0 for unread, 1 for read
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (recipient_user_id) REFERENCES users(id) ON DELETE CASCADE
+        );";
+        $this->db->exec($sql);
     }
 
     private function create_student_parent_relations_table() {
