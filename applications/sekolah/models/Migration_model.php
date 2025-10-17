@@ -34,7 +34,21 @@ class Migration_model extends Model {
         if (!$this->is_table_exists('role_permissions')) {
             $this->create_role_permissions_table();
         }
+        if (!$this->is_table_exists('student_parent_relations')) {
+            $this->create_student_parent_relations_table();
+        }
         // Add other table checks here in the future
+    }
+
+    private function create_student_parent_relations_table() {
+        $sql = "CREATE TABLE student_parent_relations (
+            student_id INTEGER NOT NULL,
+            parent_id INTEGER NOT NULL,
+            FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE CASCADE,
+            FOREIGN KEY (parent_id) REFERENCES users(id) ON DELETE CASCADE,
+            PRIMARY KEY (student_id, parent_id)
+        );";
+        $this->db->exec($sql);
     }
 
     private function create_permissions_table() {

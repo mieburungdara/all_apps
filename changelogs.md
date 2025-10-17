@@ -108,6 +108,8 @@
 - Added an admin-only page to manage and view all user attendance records.
 - Admins can now edit and delete attendance records.
 - Added a `superadmin` role with unrestricted access.
+- Added a `Wali Murid` (Parent/Guardian) role.
+- Implemented a system to link parent accounts to student accounts.
 - Added a UI for superadmins to manage roles and permissions.
 - Added filtering (by user and date) to the attendance management page.
 - Added a monthly attendance summary report page.

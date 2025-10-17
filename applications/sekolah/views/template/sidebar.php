@@ -28,6 +28,14 @@
                 </a>
               </li>
               <?php endif; ?>
+              <?php if ($auth_model->has_permission($this->session->get('user_id'), 'student.view_own_child_data')): ?>
+              <li class="nav-main-item">
+                <a class="nav-main-link" href="/sekolah/users/my_children">
+                  <i class="nav-main-link-icon fa fa-child"></i>
+                  <span class="nav-main-link-name">My Children</span>
+                </a>
+              </li>
+              <?php endif; ?>
               <li class="nav-main-heading">Admin</li>
               <li class="nav-main-item">
                 <a class="nav-main-link" href="/sekolah/admin">

@@ -55,7 +55,8 @@ class Installer extends Controller {
             // Create default roles
             $superadmin_role_id = $this->Auth_model->create_role('superadmin');
             $admin_role_id = $this->Auth_model->create_role('admin');
-            $this->Auth_model->create_role('user');
+            $user_role_id = $this->Auth_model->create_role('user');
+            $parent_role_id = $this->Auth_model->create_role('Wali Murid');
 
             // Create default permissions
             $perm_manage_users = $this->Auth_model->create_permission('users.manage', 'Manage all users');
@@ -63,6 +64,7 @@ class Installer extends Controller {
             $perm_view_own_attendance = $this->Auth_model->create_permission('attendance.view_own', 'View own attendance');
             $perm_manage_roles = $this->Auth_model->create_permission('roles.manage', 'Manage user roles and permissions');
             $perm_perform_attendance = $this->Auth_model->create_permission('attendance.perform', 'Can perform check-in and check-out');
+            $perm_view_child_data = $this->Auth_model->create_permission('student.view_own_child_data', 'View own child data');
 
             // Assign permissions to roles
             // Admin can manage users and attendance
@@ -70,10 +72,12 @@ class Installer extends Controller {
             $this->Auth_model->assign_permission_to_role($perm_manage_attendance, $admin_role_id);
             $this->Auth_model->assign_permission_to_role($perm_perform_attendance, $admin_role_id); // Admin also needs to check-in
 
-            // User can only view their own attendance and perform it
-            $user_role_id = $this->Auth_model->get_role_by_name('user')['id'];
+            // User (student) can only view their own attendance and perform it
             $this->Auth_model->assign_permission_to_role($perm_view_own_attendance, $user_role_id);
             $this->Auth_model->assign_permission_to_role($perm_perform_attendance, $user_role_id);
+
+            // Parent can view child data
+            $this->Auth_model->assign_permission_to_role($perm_view_child_data, $parent_role_id);
 
             // Assign superadmin role to the first user
             $this->Auth_model->update_user_roles($user_id, [$superadmin_role_id]);

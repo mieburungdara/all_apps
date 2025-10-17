@@ -95,6 +95,16 @@ class Users extends Controller {
         $this->load->view('users/profile', $data);
     }
 
+    public function my_children() {
+        $this->_authorize('student.view_own_child_data');
+        $parent_id = $this->session->get('user_id');
+        $this->load->model('Student_Parent_model');
+
+        $data['title'] = 'My Children';
+        $data['children'] = $this->Student_Parent_model->get_children_for_parent($parent_id);
+        $this->load->view('users/my_children', $data);
+    }
+
     public function dashboard() {
         $this->_auth_check();
         $data['title'] = 'User Dashboard';

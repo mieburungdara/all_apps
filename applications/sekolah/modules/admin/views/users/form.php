@@ -53,6 +53,22 @@ function old($key, $data, $default = '') {
                         <?php endforeach; ?>
                     </div>
                 </div>
+
+                <?php if (isset($user) && in_array('Wali Murid', $user_roles)): ?>
+                <hr>
+                <div class="mb-4">
+                    <label class="form-label">Manage Children</label>
+                    <p class="fs-sm text-muted">Link this parent account to one or more student accounts.</p>
+                    <select class="form-select" name="children[]" multiple size="8">
+                        <?php foreach ($all_students as $student): ?>
+                            <?php // Prevent a user from being their own child ?>
+                            <?php if ($student['id'] == $user['id']) continue; ?>
+                            <option value="<?= $student['id'] ?>" <?= in_array($student['id'], $child_ids) ? 'selected' : '' ?>><?= $student['nama'] ?> (<?= $student['email'] ?>)</option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <?php endif; ?>
+
                 <div class="mb-4">
                     <button type="submit" class="btn btn-primary">Save User</button>
                     <a href="/sekolah/admin/users" class="btn btn-secondary">Cancel</a>
