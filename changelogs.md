@@ -128,6 +128,10 @@
     - Scaffolded the `attendance` module using the `make:module` tool.
 
 ### Changed
+- **Migration Runner:**
+    - The `migrate.php` script now uses the `sqlite3` command-line tool directly, removing the dependency on the PHP SQLite extension.
+
+### Changed
 - The user attendance page now displays a history of the user's past attendance.
 - Refactored the authorization system from Role-Based to a more granular Permission-Based Access Control.
 - The attendance feature is now controlled by the `attendance.perform` permission.

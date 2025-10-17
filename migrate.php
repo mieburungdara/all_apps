@@ -31,49 +31,43 @@ $db_file = $db_config['path'];
 
 echo "Connecting to database: {$db_file}\n";
 
-try {
-    // Connect to the database
-    $pdo = new PDO('sqlite:' . $db_file);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+// 1. Create migrations table if it doesn't exist
+system("sqlite3 {$db_file} 'CREATE TABLE IF NOT EXISTS migrations (migration TEXT NOT NULL PRIMARY KEY);'");
+echo "Migrations table is ready.\n";
 
-    // 1. Create migrations table if it doesn't exist
-    $pdo->exec("CREATE TABLE IF NOT EXISTS migrations (migration TEXT NOT NULL PRIMARY KEY);");
-    echo "Migrations table is ready.\n";
-
-    // 2. Get all migrations that have been run
-    $stmt = $pdo->query("SELECT migration FROM migrations");
-    $run_migrations = $stmt->fetchAll(PDO::FETCH_COLUMN);
-
-    // 3. Get all available migration files
-    $all_files = scandir($migrations_path);
-    $migration_files = array_filter($all_files, function($file) {
-        return pathinfo($file, PATHINFO_EXTENSION) === 'sql';
-    });
-    sort($migration_files);
-
-    // 4. Determine and run new migrations
-    $new_migrations = array_diff($migration_files, $run_migrations);
-
-    if (empty($new_migrations)) {
-        echo "Database is already up to date.\n";
-        exit(0);
-    }
-
-    foreach ($new_migrations as $migration) {
-        echo "Migrating: {$migration}... ";
-        $sql = file_get_contents($migrations_path . $migration);
-        $pdo->exec($sql);
-
-        // Record the migration
-        $insert_stmt = $pdo->prepare("INSERT INTO migrations (migration) VALUES (?)");
-        $insert_stmt->execute([$migration]);
-        echo "OK\n";
-    }
-
-    echo "Migration completed successfully.\n";
-
-} catch (PDOException $e) {
-    echo "Database error: " . $e->getMessage() . "\n";
-    exit(1);
+// 2. Get all migrations that have been run
+$run_migrations_json = shell_exec("sqlite3 -json {$db_file} 'SELECT migration FROM migrations'");
+$run_migrations_data = json_decode($run_migrations_json, true);
+$run_migrations = [];
+if ($run_migrations_data !== null) {
+    $run_migrations = array_map(function($item) { return $item['migration']; }, $run_migrations_data);
 }
 
+// 3. Get all available migration files
+$all_files = scandir($migrations_path);
+$migration_files = array_filter($all_files, function($file) {
+    return pathinfo($file, PATHINFO_EXTENSION) === 'sql';
+});
+sort($migration_files);
+
+// 4. Determine and run new migrations
+$new_migrations = array_diff($migration_files, $run_migrations);
+
+if (empty($new_migrations)) {
+    echo "Database is already up to date.\n";
+    exit(0);
+}
+
+foreach ($new_migrations as $migration) {
+    echo "Migrating: {$migration}... ";
+    $sql = file_get_contents($migrations_path . $migration);
+    $handle = popen("sqlite3 {$db_file}", 'w');
+    fwrite($handle, $sql);
+    pclose($handle);
+
+    // Record the migration
+    system("sqlite3 {$db_file} \"INSERT INTO migrations (migration) VALUES ('{$migration}');\"");
+    echo "OK\n";
+}
+
+echo "Migration completed successfully.\n";
