@@ -100,8 +100,26 @@ class Admin extends Controller {
     }
 
     public function delete_user($id) {
-        $this->load->model('Users_model');
         $this->Users_model->delete_user($id);
         $this->response->redirect('/sekolah/admin/users');
+    }
+
+    public function view_user($user_id) {
+        $this->load->model('Users_model');
+        $this->load->model('Auth_model');
+        $this->load->model('Attendance_model');
+        $this->load->model('Student_Parent_model');
+
+        $data['title'] = 'View User';
+        $data['user'] = $this->Users_model->get_user_by_id($user_id);
+        $data['user_roles'] = $this->Auth_model->get_user_roles($user_id);
+        $data['parents'] = $this->Student_Parent_model->get_parents_for_student($user_id);
+        $data['attendance_history'] = $this->Attendance_model->get_user_attendance_history($user_id, 100); // Get up to 100 records
+
+        if (!$data['user']) {
+            show_404();
+        }
+
+        $this->load->view('admin/users/view', $data);
     }
 }

@@ -100,17 +100,17 @@ class Attendance extends Controller {
 
         $this->Attendance_model->update_attendance($id, $data);
 
-        // Trigger notification if marked absent
-        if ($data['status'] === 'absent') {
+        // Trigger notification if marked absent or late
+        if ($data['status'] === 'absent' || $data['status'] === 'late') {
             $this->load->model('Student_Parent_model');
             $this->load->model('Notification_model');
             $this->load->model('Users_model');
 
             $student = $this->Users_model->get_user_by_id($data['user_id']);
-            $parents = $this->Student_Parent_model->get_parents_for_student($data['user_id']); // Need to create this method
+            $parents = $this->Student_Parent_model->get_parents_for_student($data['user_id']);
 
             foreach ($parents as $parent) {
-                $message = "Your child, " . $student['nama'] . ", was marked absent on " . date('d M Y', strtotime($data['date'])) . ".";
+                $message = "Your child, " . $student['nama'] . ", was marked " . $data['status'] . " on " . date('d M Y', strtotime($data['date'])) . ".";
                 $this->Notification_model->create_notification($parent['id'], $message);
             }
         }

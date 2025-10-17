@@ -23,7 +23,7 @@
                     <?php foreach ($users as $user): ?>
                     <tr>
                         <th class="text-center" scope="row"><?= $user['id'] ?></th>
-                        <td><?= $user['nama'] ?></td>
+                        <td><a href="/sekolah/admin/view_user/<?= $user['id'] ?>"><?= $user['nama'] ?></a></td>
                         <td><?= $user['email'] ?></td>
                         <td>
                             <?php foreach($user['roles'] as $role): ?>

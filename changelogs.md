@@ -110,6 +110,9 @@
 - Added a `superadmin` role with unrestricted access.
 - Added a `Wali Murid` (Parent/Guardian) role.
 - Implemented a system to link parent accounts to student accounts.
+- Added a notification bell UI to the main layout to display unread notifications.
+- Expanded notification triggers to include when a student is marked 'late'.
+- Added a detailed student profile view for admins.
 - Parents can now view their children's attendance history.
 - Added a basic notification system and triggered it when a student is marked absent.
 - Added a UI for superadmins to manage roles and permissions.
