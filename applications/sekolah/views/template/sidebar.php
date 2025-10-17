@@ -16,12 +16,18 @@
                   <span class="nav-main-link-name">Dashboard</span>
                 </a>
               </li>
+              <?php 
+              // Conditionally show the attendance link
+              $auth_model = new Auth_model();
+              if ($auth_model->has_permission($this->session->get('user_id'), 'attendance.perform')): 
+              ?>
               <li class="nav-main-item">
                 <a class="nav-main-link" href="/sekolah/attendance">
                   <i class="nav-main-link-icon fa fa-check-square"></i>
                   <span class="nav-main-link-name">Attendance</span>
                 </a>
               </li>
+              <?php endif; ?>
               <li class="nav-main-heading">Admin</li>
               <li class="nav-main-item">
                 <a class="nav-main-link" href="/sekolah/admin">

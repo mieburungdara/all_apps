@@ -115,3 +115,4 @@
 ### Changed
 - The user attendance page now displays a history of the user's past attendance.
 - Refactored the authorization system from Role-Based to a more granular Permission-Based Access Control.
+- The attendance feature is now controlled by the `attendance.perform` permission.

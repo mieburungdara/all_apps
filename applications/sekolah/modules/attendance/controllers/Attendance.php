@@ -5,6 +5,13 @@ class Attendance extends Controller {
     public function __construct($module_path, $called_method) {
         parent::__construct($module_path, $called_method);
         $this->_auth_check();
+
+        // For viewing/managing all records, we check inside the method.
+        // For performing own attendance, we check here.
+        if (!in_array($called_method, ['manage', 'reports', 'edit', 'update', 'delete'])) {
+            $this->_authorize('attendance.perform');
+        }
+
         $this->load->model('Attendance_model');
     }
 

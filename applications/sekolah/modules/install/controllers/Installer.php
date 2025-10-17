@@ -62,14 +62,18 @@ class Installer extends Controller {
             $perm_manage_attendance = $this->Auth_model->create_permission('attendance.manage', 'Manage all attendance records');
             $perm_view_own_attendance = $this->Auth_model->create_permission('attendance.view_own', 'View own attendance');
             $perm_manage_roles = $this->Auth_model->create_permission('roles.manage', 'Manage user roles and permissions');
+            $perm_perform_attendance = $this->Auth_model->create_permission('attendance.perform', 'Can perform check-in and check-out');
 
             // Assign permissions to roles
             // Admin can manage users and attendance
             $this->Auth_model->assign_permission_to_role($perm_manage_users, $admin_role_id);
             $this->Auth_model->assign_permission_to_role($perm_manage_attendance, $admin_role_id);
+            $this->Auth_model->assign_permission_to_role($perm_perform_attendance, $admin_role_id); // Admin also needs to check-in
 
-            // User can only view their own attendance
-            $this->Auth_model->assign_permission_to_role($perm_view_own_attendance, $this->Auth_model->get_role_by_name('user')['id']);
+            // User can only view their own attendance and perform it
+            $user_role_id = $this->Auth_model->get_role_by_name('user')['id'];
+            $this->Auth_model->assign_permission_to_role($perm_view_own_attendance, $user_role_id);
+            $this->Auth_model->assign_permission_to_role($perm_perform_attendance, $user_role_id);
 
             // Assign superadmin role to the first user
             $this->Auth_model->update_user_roles($user_id, [$superadmin_role_id]);
