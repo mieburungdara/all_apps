@@ -127,6 +127,10 @@
     - Created a migration for the `attendance` table.
     - Scaffolded the `attendance` module using the `make:module` tool.
 
+### Added
+- **Attendance Module:**
+    - Implemented functionality to add and view attendance records.
+
 ### Changed
 - **Migration Runner:**
     - The `migrate.php` script now uses the `sqlite3` command-line tool directly, removing the dependency on the PHP SQLite extension.
