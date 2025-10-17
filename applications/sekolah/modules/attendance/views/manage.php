@@ -1,6 +1,30 @@
 <div class="content">
     <div class="block block-rounded">
         <div class="block-header block-header-default">
+            <h3 class="block-title">Filters</h3>
+        </div>
+        <div class="block-content bg-body-light">
+            <form action="/sekolah/attendance/manage" method="GET">
+                <div class="row items-push">
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" name="user_name" placeholder="User Name..." value="<?= $filters['user_name'] ?? '' ?>">
+                    </div>
+                    <div class="col-md-3">
+                        <input type="date" class="form-control" name="start_date" value="<?= $filters['start_date'] ?? '' ?>">
+                    </div>
+                    <div class="col-md-3">
+                        <input type="date" class="form-control" name="end_date" value="<?= $filters['end_date'] ?? '' ?>">
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary w-100">Filter</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="block block-rounded">
+        <div class="block-header block-header-default">
             <h3 class="block-title">Manage All Attendance</h3>
         </div>
         <div class="block-content">
@@ -50,18 +74,21 @@
             <!-- Pagination -->
             <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-end">
+                    <?php $query_string = http_build_query(array_merge($_GET, ['page' => $current_page - 1])); ?>
                     <li class="page-item <?= ($current_page <= 1) ? 'disabled' : '' ?>">
-                        <a class="page-link" href="/sekolah/attendance/manage?page=<?= $current_page - 1 ?>" aria-label="Previous">
+                        <a class="page-link" href="/sekolah/attendance/manage?<?= $query_string ?>" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
                     <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                        <?php $query_string = http_build_query(array_merge($_GET, ['page' => $i])); ?>
                         <li class="page-item <?= ($i == $current_page) ? 'active' : '' ?>">
-                            <a class="page-link" href="/sekolah/attendance/manage?page=<?= $i ?>"><?= $i ?></a>
+                            <a class="page-link" href="/sekolah/attendance/manage?<?= $query_string ?>"><?= $i ?></a>
                         </li>
                     <?php endfor; ?>
+                    <?php $query_string = http_build_query(array_merge($_GET, ['page' => $current_page + 1])); ?>
                     <li class="page-item <?= ($current_page >= $total_pages) ? 'disabled' : '' ?>">
-                        <a class="page-link" href="/sekolah/attendance/manage?page=<?= $current_page + 1 ?>" aria-label="Next">
+                        <a class="page-link" href="/sekolah/attendance/manage?<?= $query_string ?>" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>

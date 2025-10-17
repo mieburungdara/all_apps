@@ -41,6 +41,18 @@
                   <span class="nav-main-link-name">Manage Attendance</span>
                 </a>
               </li>
+              <li class="nav-main-item">
+                <a class="nav-main-link" href="/sekolah/attendance/reports">
+                  <i class="nav-main-link-icon fa fa-chart-pie"></i>
+                  <span class="nav-main-link-name">Attendance Reports</span>
+                </a>
+              </li>
+              <li class="nav-main-item">
+                <a class="nav-main-link" href="/sekolah/roles">
+                  <i class="nav-main-link-icon fa fa-user-lock"></i>
+                  <span class="nav-main-link-name">Role Management</span>
+                </a>
+              </li>
             </ul>
           </div>
         </div>

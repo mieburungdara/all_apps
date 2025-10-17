@@ -39,14 +39,21 @@ class Attendance extends Controller {
     public function manage() {
         $this->_authorize('attendance.manage');
 
+        $filters = [
+            'start_date' => $this->input->get('start_date'),
+            'end_date' => $this->input->get('end_date'),
+            'user_name' => $this->input->get('user_name')
+        ];
+
         $page = (int)($this->input->get('page', 1));
         $limit = 15;
         $offset = ($page - 1) * $limit;
 
-        $data['all_attendance'] = $this->Attendance_model->get_all_attendance_with_users($limit, $offset);
-        $total_records = $this->Attendance_model->get_total_all_attendance_count();
+        $data['all_attendance'] = $this->Attendance_model->get_all_attendance_with_users($limit, $offset, $filters);
+        $total_records = $this->Attendance_model->get_total_all_attendance_count($filters);
         
         $data['title'] = 'Manage Attendance';
+        $data['filters'] = $filters;
         $data['current_page'] = $page;
         $data['total_pages'] = ceil($total_records / $limit);
 
@@ -94,5 +101,19 @@ class Attendance extends Controller {
         $this->Attendance_model->delete_attendance($id);
         $this->session->set_flash('success', 'Attendance record deleted successfully!');
         $this->response->redirect('/sekolah/attendance/manage');
+    }
+
+    public function reports() {
+        $this->_authorize('attendance.manage'); // Reuse the same permission for now
+
+        $year = $this->input->get('year', date('Y'));
+        $month = $this->input->get('month', date('m'));
+
+        $data['title'] = 'Attendance Reports';
+        $data['year'] = $year;
+        $data['month'] = $month;
+        $data['report_data'] = $this->Attendance_model->get_attendance_summary_report($year, $month);
+
+        $this->load->view('attendance/reports', $data);
     }
 }

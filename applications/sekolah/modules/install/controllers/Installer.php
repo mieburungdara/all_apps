@@ -61,6 +61,7 @@ class Installer extends Controller {
             $perm_manage_users = $this->Auth_model->create_permission('users.manage', 'Manage all users');
             $perm_manage_attendance = $this->Auth_model->create_permission('attendance.manage', 'Manage all attendance records');
             $perm_view_own_attendance = $this->Auth_model->create_permission('attendance.view_own', 'View own attendance');
+            $perm_manage_roles = $this->Auth_model->create_permission('roles.manage', 'Manage user roles and permissions');
 
             // Assign permissions to roles
             // Admin can manage users and attendance
