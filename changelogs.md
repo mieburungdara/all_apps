@@ -119,6 +119,14 @@
 - Added filtering (by user and date) to the attendance management page.
 - Added a monthly attendance summary report page.
 
+### Added
+- **CLI Tools:**
+    - `shell/make_migration.php`: A CLI tool to auto-generate timestamped migration files.
+    - `shell/make_module.php`: A CLI tool to auto-generate module boilerplate (controller, model, view).
+- **Attendance Module:**
+    - Created a migration for the `attendance` table.
+    - Scaffolded the `attendance` module using the `make:module` tool.
+
 ### Changed
 - The user attendance page now displays a history of the user's past attendance.
 - Refactored the authorization system from Role-Based to a more granular Permission-Based Access Control.
