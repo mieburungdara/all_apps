@@ -69,7 +69,12 @@ class Loader {
         $CI =& Controller::get_instance();
         $model_path = $CI->module_path . 'models/' . $model_name . '.php';
 
-        if (file_exists($model_path)) {
+        error_log("DEBUG: Loader::model() checking path: {$model_path}", 3, __DIR__ . '/../../php_server.log');
+        $file_exists_result = file_exists($model_path);
+        error_log("DEBUG: file_exists({$model_path}) returned: " . ($file_exists_result ? 'true' : 'false'), 3, __DIR__ . '/../../php_server.log');
+
+
+        if ($file_exists_result) {
             require_once $model_path;
             $CI->$model_name = new $model_name();
         } else {
