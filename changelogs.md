@@ -151,3 +151,4 @@
 - **Debugging:** Added logging to `system/bootstrap.php` to trace execution flow and redirection logic for installer.
 - **Web Server Configuration:** Modified `.htaccess` to direct all non-file/non-directory requests to `router.php`, ensuring the main router handles application routing.
 - **Debugging:** Added `echo "Router hit!";` to the beginning of `router.php` to confirm its execution.
+- **Debugging:** Created `test.php` in the root directory to verify PHP execution.
