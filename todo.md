@@ -15,6 +15,10 @@ This file tracks the development roadmap for our suite of applications.
 - [ ] **Code Refactoring:**
     - [x] Refactor `Users` controller to reduce code duplication in `register` and `login` methods.
 
+## Database Schema Refactoring
+
+- [x] Refactor user roles and subjects to use many-to-many relationships.
+
 ## Features & Modules
 
 - [x] **User Module:** Basic registration and login.
