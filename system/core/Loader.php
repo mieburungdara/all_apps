@@ -67,7 +67,7 @@ class Loader {
 
     public function model($model_name) {
         $CI =& Controller::get_instance();
-        $model_path = $CI->getModulePath() . 'models/' . $model_name . '.php';
+        $model_path = $CI->module_path . 'models/' . $model_name . '.php';
 
         if (file_exists($model_path)) {
             require_once $model_path;
