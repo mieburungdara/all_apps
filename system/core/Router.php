@@ -54,8 +54,8 @@ class Router {
             if (!empty(array_slice($segments, 2))) {
                 $this->params = array_slice($segments, 2);
             }
-        }
-    }
+        } // This closes the if (!empty($segments[0])) block
+    } // This closes the parseUrl() method
 
     public function dispatch() {
         $module_path = APPPATH . 'modules/' . $this->module . '/';
