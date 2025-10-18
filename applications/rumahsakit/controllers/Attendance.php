@@ -79,4 +79,31 @@ class Attendance extends CI_Controller {
             show_error('You are not assigned to a class.');
         }
     }
+
+    public function send_absence_notifications() {
+        $this->load->model('student_model');
+        $this->load->model('parent_model');
+        $this->load->library('notification');
+
+        $students = $this->student_model->get_all_students();
+        $student_ids = array_column($students, 'id');
+
+        $todays_attendance = $this->attendance_model->get_daily_summary($student_ids);
+        $present_student_ids = array_column($todays_attendance, 'user_id');
+
+        $absent_student_ids = array_diff($student_ids, $present_student_ids);
+
+        foreach ($absent_student_ids as $student_id) {
+            $parents = $this->parent_model->get_parents_by_student($student_id);
+            foreach ($parents as $parent) {
+                $message = 'Your child with student ID ' . $student_id . ' is absent today.';
+                $this->notification->send($parent['phone_number'], $message);
+            }
+        }
+
+        // Respond with a success message
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode(array('status' => 'success', 'message' => 'Absence notifications sent.')));
+    }
 }
