@@ -15,6 +15,7 @@ class Controller {
         // Load necessary libraries for authentication check
         $this->session = $this->load->library('session');
         $this->response = $this->load->library('response'); // Ensure response library is also loaded for redirects
+        $this->input = $this->load->library('input'); // Load input library
 
         // Check if the called method requires authentication
         if (isset($this->protected_methods) && in_array($called_method, $this->protected_methods)) {
