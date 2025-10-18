@@ -35,6 +35,12 @@
                   <span class="nav-main-link-name">My Children</span>
                 </a>
               </li>
+              <li class="nav-main-item">
+                <a class="nav-main-link" href="/sekolah/users/telegram_link">
+                  <i class="nav-main-link-icon fa fa-telegram-plane"></i>
+                  <span class="nav-main-link-name">Link Telegram</span>
+                </a>
+              </li>
               <?php endif; ?>
               <li class="nav-main-heading">Admin</li>
               <li class="nav-main-item">

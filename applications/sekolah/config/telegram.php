@@ -1,0 +1,5 @@
+<?php
+
+return [
+    'bot_token' => 'YOUR_TELEGRAM_BOT_TOKEN',
+];

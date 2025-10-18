@@ -141,9 +141,31 @@ class Users extends Controller {
         $data['title'] = 'User Dashboard';
         $this->load->view('users/dashboard', $data);
     }
-        $this->session->destroy();
-        $this->session = Session::getInstance(); 
-        $this->session->set_flash('info', 'Anda telah berhasil logout.');
-        $this->response->redirect('/sekolah/users/login');
+
+    public function telegram_link() {
+        $this->_auth_check();
+        $user_id = $this->session->get('user_id');
+        $this->load->model('User_telegram_model');
+
+        $user_telegram = $this->User_telegram_model->get_user_telegram_by_user_id($user_id);
+
+        if (!$user_telegram || !$user_telegram['is_verified']) {
+            // Generate a new token if not linked or not verified
+            $token = bin2hex(random_bytes(16)); // 32-character hex token
+            if ($user_telegram) {
+                // Update existing unverified entry
+                $this->db->update('user_telegram', ['verification_token' => $token, 'is_verified' => FALSE], [['user_id', '=', $user_id]]);
+            } else {
+                // Create new entry
+                $this->User_telegram_model->create_user_telegram_entry($user_id, $token);
+            }
+            $data['verification_token'] = $token;
+        } else {
+            $data['telegram_chat_id'] = $user_telegram['telegram_chat_id'];
+        }
+
+        $data['title'] = 'Link Telegram Account';
+        $data['user_telegram'] = $user_telegram;
+        $this->load->view('users/telegram_link', $data);
     }
 }
