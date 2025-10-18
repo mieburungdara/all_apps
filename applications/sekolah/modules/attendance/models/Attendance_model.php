@@ -98,7 +98,7 @@ class Attendance_model extends Model {
                     SUM(CASE WHEN a.status = 'absent' THEN 1 ELSE 0 END) as total_absent,
                     SUM(CASE WHEN a.status = 'on_leave' THEN 1 ELSE 0 END) as total_on_leave
                 FROM users u
-                LEFT JOIN attendance a ON u.id = a.user_id AND STRFTIME('%Y-%m', a.date) = :date_filter
+                LEFT JOIN attendance a ON u.id = a.user_id AND DATE_FORMAT(a.date, '%Y-%m') = :date_filter
                 GROUP BY u.id, u.nama
                 ORDER BY u.nama ASC";
         
