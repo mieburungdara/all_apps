@@ -148,3 +148,4 @@
 - **Router Class Refactoring:**
     - Modified `system/bootstrap.php` to determine the application's base path and pass it to the `Router` constructor.
     - Modified `system/core/Router.php` to accept the base path and use it to accurately parse URLs from `$_SERVER['REQUEST_URI']`, enabling correct routing for sub-application routes like `/installer`.
+- **Debugging:** Added logging to `system/bootstrap.php` to trace execution flow and redirection logic for installer.
