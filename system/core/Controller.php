@@ -12,6 +12,10 @@ class Controller {
         // The Loader is the only library we need to instantiate directly.
         $this->load = new Loader();
 
+        // Load necessary libraries for authentication check
+        $this->load->library('session');
+        $this->load->library('response'); // Ensure response library is also loaded for redirects
+
         // Check if the called method requires authentication
         if (isset($this->protected_methods) && in_array($called_method, $this->protected_methods)) {
             $this->_auth_check();
