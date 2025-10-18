@@ -8,15 +8,31 @@ class Database {
     private function __construct() {
         $config = Config::getInstance();
         $db_config = $config->load('database');
-        $dsn = 'sqlite:' . $db_config['path'];
-        $options = [
-            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-        ];
-        try {
-            $this->db = new PDO($dsn, null, null, $options);
-        } catch (\PDOException $e) {
-            throw new \PDOException($e->getMessage(), (int)$e->getCode());
+
+        if ($db_config['driver'] === 'mysql') {
+            $dsn = 'mysql:host=' . $db_config['host'] . ';dbname=' . $db_config['database'];
+            $user = $db_config['username'];
+            $pass = $db_config['password'];
+            $options = [
+                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            ];
+            try {
+                $this->db = new PDO($dsn, $user, $pass, $options);
+            } catch (\PDOException $e) {
+                throw new \PDOException($e->getMessage(), (int)$e->getCode());
+            }
+        } else {
+            $dsn = 'sqlite:' . $db_config['path'];
+            $options = [
+                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            ];
+            try {
+                $this->db = new PDO($dsn, null, null, $options);
+            } catch (\PDOException $e) {
+                throw new \PDOException($e->getMessage(), (int)$e->getCode());
+            }
         }
     }
 

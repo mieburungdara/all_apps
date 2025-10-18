@@ -27,53 +27,58 @@ if (!file_exists($db_config_path)) {
 }
 
 $db_config = require $db_config_path;
-$db_file = $db_config['path'];
 
-echo "Connecting to database: {$db_file}\n";
+$host = $db_config['host'];
+$db_name = $db_config['database'];
+$user = $db_config['username'];
+$pass = $db_config['password'];
 
-try {
-    // Connect to the database
-    $pdo = new PDO('sqlite:' . $db_file);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+echo "Connecting to database: {$db_name} on {$host}\n";
 
-    // 1. Create migrations table if it doesn't exist
-    $pdo->exec("CREATE TABLE IF NOT EXISTS migrations (migration TEXT NOT NULL PRIMARY KEY);");
-    echo "Migrations table is ready.\n";
+// Connect to the database
+$mysqli = new mysqli($host, $user, $pass, $db_name);
 
-    // 2. Get all migrations that have been run
-    $stmt = $pdo->query("SELECT migration FROM migrations");
-    $run_migrations = $stmt->fetchAll(PDO::FETCH_COLUMN);
-
-    // 3. Get all available migration files
-    $all_files = scandir($migrations_path);
-    $migration_files = array_filter($all_files, function($file) {
-        return pathinfo($file, PATHINFO_EXTENSION) === 'sql';
-    });
-    sort($migration_files);
-
-    // 4. Determine and run new migrations
-    $new_migrations = array_diff($migration_files, $run_migrations);
-
-    if (empty($new_migrations)) {
-        echo "Database is already up to date.\n";
-        exit(0);
-    }
-
-    foreach ($new_migrations as $migration) {
-        echo "Migrating: {$migration}... ";
-        $sql = file_get_contents($migrations_path . $migration);
-        $pdo->exec($sql);
-
-        // Record the migration
-        $insert_stmt = $pdo->prepare("INSERT INTO migrations (migration) VALUES (?)");
-        $insert_stmt->execute([$migration]);
-        echo "OK\n";
-    }
-
-    echo "Migration completed successfully.\n";
-
-} catch (PDOException $e) {
-    echo "Database error: " . $e->getMessage() . "\n";
+if ($mysqli->connect_error) {
+    echo "Connection failed: " . $mysqli->connect_error . "\n";
     exit(1);
 }
 
+// 1. Create migrations table if it doesn't exist
+$mysqli->query("CREATE TABLE IF NOT EXISTS migrations (migration VARCHAR(255) NOT NULL PRIMARY KEY);");
+echo "Migrations table is ready.\n";
+
+// 2. Get all migrations that have been run
+$result = $mysqli->query("SELECT migration FROM migrations");
+$run_migrations = $result->fetch_all(MYSQLI_ASSOC);
+$run_migrations = array_column($run_migrations, 'migration');
+
+// 3. Get all available migration files
+$all_files = scandir($migrations_path);
+$migration_files = array_filter($all_files, function($file) {
+    return pathinfo($file, PATHINFO_EXTENSION) === 'sql';
+});
+sort($migration_files);
+
+// 4. Determine and run new migrations
+$new_migrations = array_diff($migration_files, $run_migrations);
+
+if (empty($new_migrations)) {
+    echo "Database is already up to date.\n";
+    exit(0);
+}
+
+foreach ($new_migrations as $migration) {
+    echo "Migrating: {$migration}... ";
+    $sql = file_get_contents($migrations_path . $migration);
+    $mysqli->multi_query($sql);
+
+    // Record the migration
+    $stmt = $mysqli->prepare("INSERT INTO migrations (migration) VALUES (?)");
+    $stmt->bind_param('s', $migration);
+    $stmt->execute();
+    echo "OK\n";
+}
+
+$mysqli->close();
+
+echo "Migration completed successfully.\n";
