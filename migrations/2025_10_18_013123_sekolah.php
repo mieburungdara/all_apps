@@ -1,0 +1,1 @@
+RENAME TABLE role_permissions TO jabatan_permissions;

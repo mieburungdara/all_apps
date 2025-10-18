@@ -40,21 +40,21 @@ function old($key, $data, $default = '') {
                     <?php endif; ?>
                 </div>
                 <div class="mb-4">
-                    <label class="form-label">Roles</label>
+                    <label class="form-label">Jabatan</label>
                     <div>
                         <?php 
-                        $user_role_ids = array_map(function($role) { return $role['id']; }, $user_roles ?? []);
-                        $old_roles = old('roles', $old_input, $user_role_ids);
-                        foreach ($all_roles as $role): ?>
+                        $user_jabatan_ids = array_map(function($jabatan) { return $jabatan['id']; }, $user_jabatan ?? []);
+                        $old_jabatan = old('jabatan', $old_input, $user_jabatan_ids);
+                        foreach ($all_jabatan as $jabatan): ?>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" value="<?= $role['id'] ?>" id="role-<?= $role['id'] ?>" name="roles[]" <?= in_array($role['id'], $old_roles) ? 'checked' : '' ?>>
-                                <label class="form-check-label" for="role-<?= $role['id'] ?>"><?= $role['role_name'] ?></label>
+                                <input class="form-check-input" type="checkbox" value="<?= $jabatan['id'] ?>" id="jabatan-<?= $jabatan['id'] ?>" name="jabatan[]" <?= in_array($jabatan['id'], $old_jabatan) ? 'checked' : '' ?>>
+                                <label class="form-check-label" for="jabatan-<?= $jabatan['id'] ?>"><?= $jabatan['nama_jabatan'] ?></label>
                             </div>
                         <?php endforeach; ?>
                     </div>
                 </div>
 
-                <?php if (isset($user) && in_array('Wali Murid', $user_roles)): ?>
+                <?php if (isset($user) && in_array('Wali Murid', $user_jabatan)): ?>
                 <hr>
                 <div class="mb-4">
                     <label class="form-label">Manage Children</label>

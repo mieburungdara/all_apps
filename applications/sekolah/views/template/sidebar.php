@@ -62,9 +62,9 @@
                 </a>
               </li>
               <li class="nav-main-item">
-                <a class="nav-main-link" href="/sekolah/roles">
+                <a class="nav-main-link" href="/sekolah/jabatan">
                   <i class="nav-main-link-icon fa fa-user-lock"></i>
-                  <span class="nav-main-link-name">Role Management</span>
+                  <span class="nav-main-link-name">Jabatan Management</span>
                 </a>
               </li>
             </ul>

@@ -17,7 +17,7 @@ class Admin extends Controller {
         $this->load->model('Auth_model');
         $users = $this->Users_model->get_all_users();
         foreach ($users as &$user) {
-            $user['roles'] = $this->Auth_model->get_user_roles($user['id']);
+            $user['jabatan'] = $this->Auth_model->get_user_jabatan($user['id']);
         }
 
         $data['title'] = 'User Management';
@@ -28,7 +28,7 @@ class Admin extends Controller {
     public function add_user() {
         $this->load->model('Auth_model');
         $data['title'] = 'Add User';
-        $data['all_roles'] = $this->Auth_model->get_all_roles();
+        $data['all_jabatan'] = $this->Auth_model->get_all_jabatan();
         $this->load->view('admin/users/form', $data);
     }
 
@@ -39,8 +39,8 @@ class Admin extends Controller {
 
         $data['title'] = 'Edit User';
         $data['user'] = $this->Users_model->get_user_by_id($id);
-        $data['user_roles'] = $this->Auth_model->get_user_roles($id);
-        $data['all_roles'] = $this->Auth_model->get_all_roles();
+        $data['user_jabatan'] = $this->Auth_model->get_user_jabatan($id);
+        $data['all_jabatan'] = $this->Auth_model->get_all_jabatan();
         
         // For parent-child relationship management
         $data['all_students'] = $this->Users_model->get_all_users(); // Simplified: In a real app, you'd filter for students
@@ -83,7 +83,7 @@ class Admin extends Controller {
             'email' => $this->input->post('email'),
             'password' => $this->input->post('password'),
         ];
-        $role_ids = $this->input->post('roles') ?? [];
+        $jabatan_ids = $this->input->post('jabatan') ?? [];
         $child_ids = $this->input->post('children') ?? [];
 
         if (empty($user_id)) { // New user
@@ -92,7 +92,7 @@ class Admin extends Controller {
             $this->Users_model->update_user($user_id, $user_data);
         }
 
-        $this->Auth_model->update_user_roles($user_id, $role_ids);
+        $this->Auth_model->update_user_jabatan($user_id, $jabatan_ids);
         $this->Student_Parent_model->update_children_for_parent($user_id, $child_ids);
 
         $this->session->set_flash('success', 'User saved successfully!');
@@ -112,7 +112,7 @@ class Admin extends Controller {
 
         $data['title'] = 'View User';
         $data['user'] = $this->Users_model->get_user_by_id($user_id);
-        $data['user_roles'] = $this->Auth_model->get_user_roles($user_id);
+        $data['user_jabatan'] = $this->Auth_model->get_user_jabatan($user_id);
         $data['parents'] = $this->Student_Parent_model->get_parents_for_student($user_id);
         $data['attendance_history'] = $this->Attendance_model->get_user_attendance_history($user_id, 100); // Get up to 100 records
 

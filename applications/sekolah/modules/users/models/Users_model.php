@@ -8,10 +8,10 @@ class Users_model extends Model {
         $this->insert('users', $data);
         $user_id = $this->db->last_insert_id();
 
-        // Assign default 'user' role
+        // Assign default 'user' jabatan
         $this->load->model('Auth_model');
-        $role_id = $this->Auth_model->create_role('user');
-        $this->Auth_model->assign_role($user_id, $role_id);
+        $jabatan_id = $this->Auth_model->create_jabatan('user');
+        $this->Auth_model->assign_jabatan($user_id, $jabatan_id);
 
         return $user_id;
     }

@@ -15,7 +15,7 @@
                         <th class="text-center" style="width: 50px;">#</th>
                         <th>Name</th>
                         <th>Email</th>
-                        <th>Roles</th>
+                        <th>Jabatan</th>
                         <th class="text-center" style="width: 100px;">Actions</th>
                     </tr>
                 </thead>
@@ -26,8 +26,8 @@
                         <td><a href="/sekolah/admin/view_user/<?= $user['id'] ?>"><?= $user['nama'] ?></a></td>
                         <td><?= $user['email'] ?></td>
                         <td>
-                            <?php foreach($user['roles'] as $role): ?>
-                                <span class="badge bg-primary"><?= $role ?></span>
+                            <?php foreach($user['jabatan'] as $jabatan): ?>
+                                <span class="badge bg-primary"><?= $jabatan ?></span>
                             <?php endforeach; ?>
                         </td>
                         <td class="text-center">

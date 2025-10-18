@@ -5,9 +5,9 @@
         </div>
         <div class="block-content">
             <p><strong>Email:</strong> <?= $user['email'] ?></p>
-            <p><strong>Roles:</strong> 
-                <?php foreach($user_roles as $role): ?>
-                    <span class="badge bg-primary"><?= $role ?></span>
+            <p><strong>Jabatan:</strong> 
+                <?php foreach($user_jabatan as $jabatan): ?>
+                    <span class="badge bg-primary"><?= $jabatan ?></span>
                 <?php endforeach; ?>
             </p>
         </div>

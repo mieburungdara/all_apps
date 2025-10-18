@@ -1,0 +1,4 @@
+CREATE TABLE jabatan (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nama_jabatan VARCHAR(255) NOT NULL
+);

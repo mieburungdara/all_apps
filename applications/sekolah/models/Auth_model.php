@@ -2,66 +2,66 @@
 
 class Auth_model extends Model {
 
-    public function get_role_by_name($role_name) {
-        return $this->db->fetch_one("SELECT * FROM roles WHERE role_name = :role_name", [':role_name' => $role_name]);
+    public function get_jabatan_by_name($jabatan_name) {
+        return $this->db->fetch_one("SELECT * FROM jabatan WHERE nama_jabatan = :jabatan_name", [':jabatan_name' => $jabatan_name]);
     }
 
-    public function create_role($role_name) {
-        if (!$this->get_role_by_name($role_name)) {
-            $this->db->insert('roles', ['role_name' => $role_name]);
-            return $this->db->last_insert_id();
+    public function create_jabatan($jabatan_name) {
+        if (!$this->get_jabatan_by_name($jabatan_name)) {
+            $this->db->insert('jabatan', ['nama_jabatan' => $jabatan_name]);
         }
-        $role = $this->get_role_by_name($role_name);
-        return $role['id'];
+        $jabatan = $this->get_jabatan_by_name($jabatan_name);
+        return $jabatan['id'];
     }
 
-    public function assign_role($user_id, $role_id) {
-        $this->db->insert('user_roles', ['user_id' => $user_id, 'role_id' => $role_id]);
+    public function assign_jabatan($user_id, $jabatan_id) {
+        $this->db->insert('user_jabatan', ['user_id' => $user_id, 'jabatan_id' => $jabatan_id]);
     }
 
-    public function user_has_role($user_id, $role_name) {
-        $sql = "SELECT COUNT(*) as count FROM user_roles ur JOIN roles r ON ur.role_id = r.id WHERE ur.user_id = :user_id AND r.role_name = :role_name";
-        $result = $this->db->fetch_one($sql, [':user_id' => $user_id, ':role_name' => $role_name]);
-        return $result['count'] > 0;
+    public function user_has_jabatan($user_id, $jabatan_name) {
+        $sql = "SELECT COUNT(*) as count FROM user_jabatan uj JOIN jabatan j ON uj.jabatan_id = j.id WHERE uj.user_id = :user_id AND j.nama_jabatan = :jabatan_name";
+        $result = $this->db->fetch_one($sql, [':user_id' => $user_id, ':jabatan_name' => $jabatan_name]);
+        return (int)($result['count'] ?? 0) > 0;
     }
     
-    public function get_user_roles($user_id) {
-        $sql = "SELECT r.role_name FROM user_roles ur JOIN roles r ON ur.role_id = r.id WHERE ur.user_id = :user_id";
+    public function get_user_jabatan($user_id) {
+        $sql = "SELECT j.nama_jabatan FROM user_jabatan uj JOIN jabatan j ON uj.jabatan_id = j.id WHERE uj.user_id = :user_id";
         $results = $this->db->query($sql, [':user_id' => $user_id]);
-        return array_column($results, 'role_name');
+        return array_column($results, 'nama_jabatan');
     }
 
-    public function get_all_roles() {
-        return $this->db->query("SELECT * FROM roles");
+    public function get_all_jabatan() {
+        return $this->db->query("SELECT * FROM jabatan");
     }
 
-    public function get_role_by_id($role_id) {
-        return $this->db->get('roles', [['id', '=', $role_id]], true);
+    public function get_jabatan_by_id($jabatan_id) {
+        return $this->db->get('jabatan', [['id', '=', $jabatan_id]], true);
     }
 
     public function get_all_permissions() {
         return $this->db->query("SELECT * FROM permissions ORDER BY permission_name");
     }
 
-    public function get_permissions_for_role($role_id) {
-        $sql = "SELECT p.id FROM role_permissions rp JOIN permissions p ON rp.permission_id = p.id WHERE rp.role_id = :role_id";
-        $results = $this->db->query($sql, [':role_id' => $role_id]);
+    public function get_permissions_for_jabatan($jabatan_id) {
+        $sql = "SELECT p.id FROM jabatan_permissions jp JOIN permissions p ON jp.permission_id = p.id WHERE jp.jabatan_id = :jabatan_id";
+        $results = $this->db->query($sql, [':jabatan_id' => $jabatan_id]);
+        if (empty($results)) return [];
         return array_column($results, 'id');
     }
 
-    public function update_role_permissions($role_id, $permission_ids) {
+    public function update_jabatan_permissions($jabatan_id, $permission_ids) {
         // Superadmin and user roles cannot be modified
-        $role = $this->get_role_by_id($role_id);
-        if (in_array($role['role_name'], ['superadmin', 'user'])) {
-            return;
+        $jabatan = $this->get_jabatan_by_id($jabatan_id);
+        if (in_array($jabatan['nama_jabatan'], ['superadmin', 'user'])) {
+            return; // Or throw an exception
         }
 
         // Delete existing permissions for the role
-        $this->db->delete('role_permissions', [['role_id', '=', $role_id]]);
+        $this->db->delete('jabatan_permissions', [['jabatan_id', '=', $jabatan_id]]);
 
         // Assign new permissions
         foreach ($permission_ids as $permission_id) {
-            $this->assign_permission_to_role($permission_id, $role_id);
+            $this->assign_permission_to_jabatan($permission_id, $jabatan_id);
         }
     }
 
@@ -75,45 +75,46 @@ class Auth_model extends Model {
         return $this->db->last_insert_id();
     }
 
-    public function assign_permission_to_role($permission_id, $role_id) {
-        // Avoid creating duplicate assignments
-        $existing = $this->db->get('role_permissions', [
-            ['role_id', '=', $role_id],
+    public function assign_permission_to_jabatan($permission_id, $jabatan_id) {
+        // Check if the permission is already assigned to the role to avoid duplicates
+        $existing = $this->db->get('jabatan_permissions', [
+            ['jabatan_id', '=', $jabatan_id],
             ['permission_id', '=', $permission_id]
         ], true);
+
         if (!$existing) {
-            $this->db->insert('role_permissions', ['role_id' => $role_id, 'permission_id' => $permission_id]);
+            $this->db->insert('jabatan_permissions', ['jabatan_id' => $jabatan_id, 'permission_id' => $permission_id]);
         }
     }
 
-    public function has_permission($user_id, $permission_name) {
-        // First, check if the user is a superadmin
-        if ($this->user_has_role($user_id, 'superadmin')) {
+    public function user_can($user_id, $permission_name) {
+        // Superadmin can do anything
+        if ($this->user_has_jabatan($user_id, 'superadmin')) {
             return true;
         }
 
         // If not superadmin, check for the specific permission through their roles
-        $sql = "SELECT COUNT(*) as count 
-                FROM user_roles ur
-                JOIN role_permissions rp ON ur.role_id = rp.role_id
-                JOIN permissions p ON rp.permission_id = p.id
-                WHERE ur.user_id = :user_id AND p.permission_name = :permission_name";
-        
+        $sql = "SELECT COUNT(*) as count
+                FROM user_jabatan uj
+                JOIN jabatan_permissions jp ON uj.jabatan_id = jp.jabatan_id
+                JOIN permissions p ON jp.permission_id = p.id
+                WHERE uj.user_id = :user_id AND p.permission_name = :permission_name";
+
         $result = $this->db->fetch_one($sql, [
             ':user_id' => $user_id,
             ':permission_name' => $permission_name
         ]);
 
-        return $result && $result['count'] > 0;
+        return (int)($result['count'] ?? 0) > 0;
     }
 
-    public function update_user_roles($user_id, $role_ids) {
+    public function update_user_jabatan($user_id, $jabatan_ids) {
         // First, delete existing roles for the user
-        $this->db->delete('user_roles', [['user_id', '=', $user_id]]);
+        $this->db->delete('user_jabatan', [['user_id', '=', $user_id]]);
 
         // Then, assign the new roles
-        foreach ($role_ids as $role_id) {
-            $this->assign_role($user_id, $role_id);
+        foreach ($jabatan_ids as $jabatan_id) {
+            $this->assign_jabatan($user_id, $jabatan_id);
         }
     }
 }
