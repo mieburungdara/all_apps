@@ -12,38 +12,47 @@ class Users extends Controller {
             return false;
         }
         if (!$this->session->validate_csrf_token($this->input->csrf_token())) {
-            show_error('Invalid CSRF token. Please try submitting the form again.');
+            $this->session->set_flash('error', 'Invalid CSRF token. Please try submitting the form again.');
+            return false;
         }
         return true;
     }
 
     public function login() {
-        if ($this->input->method() === 'POST') {
-            $email = $this->input->post('email');
-            $password = $this->input->post('password');
-
-            $user = $this->Users_model->get_user_by_email($email);
-
-            if ($user && password_verify($password, $user['password'])) {
-                $this->session->set('user_id', $user['id']);
-                $this->session->regenerate_id();
-                $this->response->redirect('/sekolah/users/dashboard');
-            } else {
-                $this->session->set_flash('error', 'Invalid email or password.');
-            }
+        if ($this->_is_valid_post()) {
+            $this->_handle_login();
         }
         $data['title'] = 'Login';
         $this->load->view('users/login', $data, 'auth');
     }
 
+    private function _handle_login() {
+        $email = $this->input->post('email');
+        $password = $this->input->post('password');
+
+        $user = $this->Users_model->get_user_by_email($email);
+
+        if ($user && password_verify($password, $user['password'])) {
+            $this->session->set('user_id', $user['id']);
+            $this->session->regenerate_id();
+            $this->response->redirect('/sekolah/users/dashboard');
+        } else {
+            $this->session->set_flash('error', 'Invalid email or password.');
+        }
+    }
+
     public function register() {
-        if ($this->input->method() === 'POST') {
-            $this->Users_model->register_user($this->input->post());
-            $this->session->set_flash('success', 'Registration successful! Please login.');
-            $this->response->redirect('/sekolah/users/login');
+        if ($this->_is_valid_post()) {
+            $this->_handle_register();
         }
         $data['title'] = 'Register';
         $this->load->view('users/register', $data, 'auth');
+    }
+
+    private function _handle_register() {
+        $this->Users_model->register_user($this->input->post());
+        $this->session->set_flash('success', 'Registration successful! Please login.');
+        $this->response->redirect('/sekolah/users/login');
     }
 
     public function logout() {
@@ -55,37 +64,8 @@ class Users extends Controller {
         $this->_auth_check();
         $user_id = $this->session->get('user_id');
 
-        if ($this->input->method() === 'POST') {
-            $action = $this->input->post('action');
-
-            if ($action === 'update_profile') {
-                $rules = [
-                    'nama' => 'required|alpha_space',
-                    'email' => 'required|email|is_unique[users.email.id.' . $user_id . ']',
-                ];
-        
-                if (!empty($this->input->post('password'))) {
-                    $rules['password'] = 'min_length[8]';
-                }
-
-                if (!$this->input->validate($rules)) {
-                    $this->session->set_flash('errors', $this->input->get_errors());
-                    $this->session->set_old_input($this->input->post());
-                } else {
-                    $user_data = [
-                        'nama' => $this->input->post('nama'),
-                        'email' => $this->input->post('email'),
-                        'password' => $this->input->post('password'),
-                    ];
-                    $this->Users_model->update_user($user_id, $user_data);
-                    $this->session->set_flash('success', 'Profile updated successfully!');
-                }
-
-            } elseif ($action === 'regenerate_key') {
-                $this->Users_model->regenerate_api_key($user_id);
-                $this->session->set_flash('success', 'API Key regenerated successfully!');
-            }
-            
+        if ($this->_is_valid_post()) {
+            $this->_handle_profile_update($user_id);
             $this->response->redirect('/sekolah/users/profile');
             return;
         }
@@ -93,6 +73,38 @@ class Users extends Controller {
         $data['title'] = 'My Profile';
         $data['user'] = $this->Users_model->get_user_by_id($user_id);
         $this->load->view('users/profile', $data);
+    }
+
+    private function _handle_profile_update($user_id) {
+        $action = $this->input->post('action');
+
+        if ($action === 'update_profile') {
+            $rules = [
+                'nama' => 'required|alpha_space',
+                'email' => 'required|email|is_unique[users.email.id.' . $user_id . ']',
+            ];
+    
+            if (!empty($this->input->post('password'))) {
+                $rules['password'] = 'min_length[8]';
+            }
+
+            if (!$this->input->validate($rules)) {
+                $this->session->set_flash('errors', $this->input->get_errors());
+                $this->session->set_old_input($this->input->post());
+            } else {
+                $user_data = [
+                    'nama' => $this->input->post('nama'),
+                    'email' => $this->input->post('email'),
+                    'password' => $this->input->post('password'),
+                ];
+                $this->Users_model->update_user($user_id, $user_data);
+                $this->session->set_flash('success', 'Profile updated successfully!');
+            }
+
+        } elseif ($action === 'regenerate_key') {
+            $this->Users_model->regenerate_api_key($user_id);
+            $this->session->set_flash('success', 'API Key regenerated successfully!');
+        }
     }
 
     public function my_children() {

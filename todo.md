@@ -13,7 +13,7 @@ This file tracks the development roadmap for our suite of applications.
     - [x] Build a CLI tool `make:module` to auto-generate module boilerplate.
     - [x] Build a CLI tool `make:migration` to auto-generate timestamped migration files.
 - [ ] **Code Refactoring:**
-    - [ ] Refactor `Users` controller to reduce code duplication in `register` and `login` methods.
+    - [x] Refactor `Users` controller to reduce code duplication in `register` and `login` methods.
 
 ## Features & Modules
 
