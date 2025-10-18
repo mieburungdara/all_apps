@@ -1,7 +1,5 @@
 <?php
 // router.php
-echo "Router hit!"; // Debugging line
-
 // Serve static files directly if they exist
 if (preg_match('/\.(?:png|jpg|jpeg|gif|css|js|ico)$/', $_SERVER["REQUEST_URI"])) {
     return false;

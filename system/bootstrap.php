@@ -4,8 +4,6 @@
 ini_set('display_errors', 0);
 error_reporting(E_ALL);
 
-error_log("DEBUG: bootstrap.php started.", 3, __DIR__ . '/../php_server.log');
-
 register_shutdown_function(function() {
     $error = error_get_last();
     if ($error !== null && in_array($error['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR])) {
@@ -25,16 +23,11 @@ set_error_handler(function($severity, $message, $file, $line) {
     return true; // Don't execute PHP internal error handler
 });
 
-error_log("DEBUG: Checking for installed.lock in " . (defined('APPPATH') ? APPPATH : 'APPPATH not defined') . ".", 3, __DIR__ . '/../php_server.log');
-
 // Redirect to installer if not installed
 if (!file_exists(APPPATH . 'installed.lock') && strpos($_SERVER['REQUEST_URI'], '/install') === false) {
-    error_log("DEBUG: installed.lock not found and not on /install route. Redirecting to /sekolah/installer.", 3, __DIR__ . '/../php_server.log');
     header('Location: /sekolah/installer');
     exit;
-    error_log("DEBUG: Should not reach here after exit.", 3, __DIR__ . '/../php_server.log'); // This should not be logged
 }
-error_log("DEBUG: installed.lock found or on /install route. Continuing execution.", 3, __DIR__ . '/../php_server.log');
 
 // Load Composer's autoloader
 require_once __DIR__ . '/../../vendor/autoload.php';
