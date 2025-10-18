@@ -64,6 +64,7 @@ class Installer extends Controller {
             $perm_view_own_attendance = $this->Auth_model->create_permission('attendance.view_own', 'View own attendance');
             $perm_manage_jabatan = $this->Auth_model->create_permission('jabatan.manage', 'Manage user jabatan and permissions');
             $perm_perform_attendance = $this->Auth_model->create_permission('attendance.perform', 'Can perform check-in and check-out');
+            $perm_teacher_manage_attendance = $this->Auth_model->create_permission('attendance.teacher_manage', 'Teacher can manage student attendance');
             $perm_view_child_data = $this->Auth_model->create_permission('student.view_own_child_data', 'View own child data');
 
             // Assign permissions to jabatan
@@ -71,6 +72,7 @@ class Installer extends Controller {
             $this->Auth_model->assign_permission_to_jabatan($perm_manage_users, $admin_jabatan_id);
             $this->Auth_model->assign_permission_to_jabatan($perm_manage_attendance, $admin_jabatan_id);
             $this->Auth_model->assign_permission_to_jabatan($perm_perform_attendance, $admin_jabatan_id); // Admin also needs to check-in
+            $this->Auth_model->assign_permission_to_jabatan($perm_teacher_manage_attendance, $admin_jabatan_id); // Admin can also manage student attendance
 
             // User (student) can only view their own attendance and perform it
             $this->Auth_model->assign_permission_to_jabatan($perm_view_own_attendance, $user_jabatan_id);

@@ -139,4 +139,52 @@ class Attendance extends Controller {
 
         $this->load->view('attendance/reports', $data);
     }
+
+    public function teacher_manage_attendance() {
+        $this->_authorize('attendance.teacher_manage');
+        $this->load->model('Auth_model');
+        $this->load->model('Users_model');
+        $this->load->model('Mata_pelajaran_model');
+
+        $teacher_id = $this->session->get('user_id');
+        $data['mata_pelajaran_taught'] = $this->Mata_pelajaran_model->get_mata_pelajaran_by_guru_id($teacher_id);
+
+        $selected_mapel_id = $this->input->get('mapel_id');
+        $selected_date = $this->input->get('date', date('Y-m-d'));
+
+        $data['selected_mapel_id'] = $selected_mapel_id;
+        $data['selected_date'] = $selected_date;
+
+        $data['students_attendance'] = [];
+        if ($selected_mapel_id) {
+            $students = $this->Mata_pelajaran_model->get_students_by_mapel_id($selected_mapel_id);
+            foreach ($students as $student) {
+                $attendance = $this->Attendance_model->get_attendance_by_date_and_user($selected_date, $student['id']);
+                $data['students_attendance'][] = [
+                    'student_id' => $student['id'],
+                    'student_nama' => $student['nama'],
+                    'attendance_status' => $attendance['status'] ?? 'absent', // Default to absent
+                    'attendance_id' => $attendance['id'] ?? null
+                ];
+            }
+        }
+
+        $data['title'] = 'Manage Student Attendance';
+        $this->load->view('attendance/teacher_manage_attendance', $data);
+    }
+
+    public function update_student_attendance_status() {
+        $this->_authorize('attendance.teacher_manage');
+        $this->load->model('Attendance_model');
+
+        $attendance_id = $this->input->post('attendance_id');
+        $user_id = $this->input->post('user_id');
+        $date = $this->input->post('date');
+        $status = $this->input->post('status');
+
+        $this->Attendance_model->update_student_attendance($attendance_id, $user_id, $date, $status);
+
+        $this->session->set_flash('success', 'Student attendance updated successfully!');
+        $this->response->redirect('/sekolah/attendance/teacher_manage_attendance?mapel_id=' . $this->input->post('mapel_id') . '&date=' . $date);
+    }
 }

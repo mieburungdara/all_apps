@@ -116,4 +116,28 @@ class Attendance_model extends Model {
     public function delete_attendance($id) {
         return $this->db->delete('attendance', [['id', '=', $id]]);
     }
+
+    public function get_attendance_by_date_and_user($date, $user_id) {
+        return $this->db->get('attendance', [
+            ['date', '=', $date],
+            ['user_id', '=', $user_id]
+        ], true);
+    }
+
+    public function update_student_attendance($attendance_id, $user_id, $date, $status) {
+        $data = [
+            'user_id' => $user_id,
+            'date' => $date,
+            'status' => $status
+        ];
+
+        if ($attendance_id) {
+            // Update existing record
+            return $this->db->update('attendance', $data, [['id', '=', $attendance_id]]);
+        } else {
+            // Create new record
+            $data['check_in_time'] = date('Y-m-d H:i:s'); // Assuming manual marking implies check-in
+            return $this->db->insert('attendance', $data);
+        }
+    }
 }

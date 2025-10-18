@@ -67,6 +67,14 @@
                   <span class="nav-main-link-name">Jabatan Management</span>
                 </a>
               </li>
+              <?php if ($auth_model->has_permission($this->session->get('user_id'), 'attendance.teacher_manage')): ?>
+              <li class="nav-main-item">
+                <a class="nav-main-link" href="/sekolah/attendance/teacher_manage_attendance">
+                  <i class="nav-main-link-icon fa fa-user-check"></i>
+                  <span class="nav-main-link-name">Manage Student Attendance</span>
+                </a>
+              </li>
+              <?php endif; ?>
             </ul>
           </div>
         </div>
