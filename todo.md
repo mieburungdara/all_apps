@@ -28,6 +28,7 @@ This file tracks the development roadmap for our suite of applications.
 - [x] **Attendance Module:**
     - [x] Create a new migration file for the `attendance` table (`user_id`, `check_in_time`, `check_out_time`, `date`).
     - [x] Create the `attendance` module (Controller, Model, Views) for recording and viewing attendance.
+    - [x] Implement teacher-managed student attendance.
 - [ ] **Finance Module:**
     - [ ] Create migration files for `kas_kecil` and `kas_besar` tables.
     - [ ] Create the `finance` module for managing finances.
