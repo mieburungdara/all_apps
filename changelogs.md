@@ -153,3 +153,4 @@
 - **Debugging:** Removed `echo "Router hit!";` from `router.php`.
 - **Debugging:** Removed logging from `system/bootstrap.php`.
 - **Debugging:** Created `test.php` in the root directory to verify PHP execution.
+- **Fix:** Removed redundant Composer autoloader inclusion from `system/bootstrap.php` to resolve "Failed opening required" error.

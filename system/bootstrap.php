@@ -29,8 +29,7 @@ if (!file_exists(APPPATH . 'installed.lock') && strpos($_SERVER['REQUEST_URI'], 
     exit;
 }
 
-// Load Composer's autoloader
-require_once __DIR__ . '/../../vendor/autoload.php';
+// Composer's autoloader is loaded by router.php
 
 
 // Load helper functions
