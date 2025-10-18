@@ -1,22 +1,22 @@
 <?php
 
-if ($argc < 3) {
-    echo "Usage: php shell/make_migration.php <application_name> <migration_name>\n";
+if ($argc < 2) {
+    echo "Usage: php shell/make_migration.php <migration_name>\n";
     exit(1);
 }
 
-$appName = $argv[1];
-$migrationName = $argv[2];
+$migrationName = $argv[1];
 $timestamp = date('Y_m_d_His');
-$filename = $timestamp . '_' . $migrationName . '.sql';
-$filepath = 'applications/' . $appName . '/database/migrations/' . $filename;
+$filename = $timestamp . '_' . $migrationName . '.php';
+$filepath = 'migrations/' . $filename;
 
-if (!is_dir(dirname($filepath))) {
-    mkdir(dirname($filepath), 0755, true);
+if (!is_dir('migrations')) {
+    mkdir('migrations');
 }
 
-$content = "-- SQL migration for " . $migrationName . "\n";
+$content = "<?php\n\nclass " . ucfirst($migrationName) . " {\n    public function up() {\n        // your migration logic here\n    }\n\n    public function down() {\n        // your rollback logic here\n    }\n}\n";
 
 file_put_contents($filepath, $content);
 
 echo "Migration created: $filepath\n";
+
