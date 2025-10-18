@@ -19,8 +19,8 @@ This file tracks the development roadmap for our suite of applications.
 
 - [x] **User Module:** Basic registration and login.
     - [x] Implement Google OAuth for social login.
-    - [ ] Create a "User Profile" page where users can view and update their information (name, email).
-    - [ ] Implement a "Change Password" feature on the profile page.
+    - [x] Create a "User Profile" page where users can view and update their information (name, email).
+    - [x] Implement a "Change Password" feature on the profile page.
 - [x] **Attendance Module:**
     - [x] Create a new migration file for the `attendance` table (`user_id`, `check_in_time`, `check_out_time`, `date`).
     - [x] Create the `attendance` module (Controller, Model, Views) for recording and viewing attendance.
