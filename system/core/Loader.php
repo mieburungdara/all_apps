@@ -3,8 +3,11 @@
 class Loader {
 
     private $_loaded_libraries = [];
+    private $module_path; // New property to store the module path
 
-    public function __construct() {}
+    public function __construct($module_path = '') {
+        $this->module_path = $module_path;
+    }
 
     public function library($library) {
         $library = ucfirst($library);
@@ -66,8 +69,8 @@ class Loader {
     }
 
     public function model($model_name) {
-        $CI =& Controller::get_instance();
-        $model_path = $CI->module_path . 'models/' . $model_name . '.php';
+        $CI =& Controller::get_instance(); // Still need CI for assigning the model to it
+        $model_path = $this->module_path . 'models/' . $model_name . '.php'; // Use Loader's module_path
 
         error_log("DEBUG: Loader::model() checking path: {$model_path}", 3, __DIR__ . '/../../php_server.log');
         $file_exists_result = file_exists($model_path);

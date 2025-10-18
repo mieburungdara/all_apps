@@ -161,3 +161,4 @@
 - **Fix:** Modified `system/bootstrap.php` to exclude installer and login routes from the `installed.lock` check, preventing redirect loops.
 - **Fix:** Corrected `system/core/Loader.php` to access `module_path` property directly from Controller instance instead of calling a non-existent `getModulePath()` method.
 - **Debugging:** Added logging to `system/core/Loader.php` to trace model path and `file_exists()` result.
+- **Fix:** Modified `system/core/Loader.php` to accept `module_path` in its constructor, store it, and use it in the `model()` method for correct model path resolution.

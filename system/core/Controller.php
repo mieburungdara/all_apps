@@ -10,7 +10,7 @@ class Controller {
         $this->module_path = $module_path;
         
         // The Loader is the only library we need to instantiate directly.
-        $this->load = new Loader();
+        $this->load = new Loader($this->module_path);
 
         // Load necessary libraries for authentication check
         $this->session = $this->load->library('session');
