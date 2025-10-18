@@ -119,6 +119,12 @@
 - Added filtering (by user and date) to the attendance management page.
 - Added a monthly attendance summary report page.
 
+### Changed
+- **Switched to MySQL:** The framework now uses MySQL for database operations.
+- **Refactored `Users` controller:** Reduced code duplication in `login`, `register`, and `profile` methods.
+- **Database Schema Refactoring:** Implemented many-to-many relationships for user roles (jabatan) and subjects (mata_pelajaran).
+- **Attendance Module:** Implemented teacher-managed student attendance.
+
 ### Added
 - **CLI Tools:**
     - `shell/make_migration.php`: A CLI tool to auto-generate timestamped migration files.
