@@ -7,8 +7,10 @@ class Router {
     protected $method = 'index';
     protected $params = [];
     protected $routes = [];
+    protected $base_path = ''; // New property to store the base path
 
-    public function __construct() {
+    public function __construct($base_path = '') { // Accept base_path in constructor
+        $this->base_path = $base_path; // Store the base path
         $this->load_routes();
         $this->parseUrl();
         $this->dispatch();
@@ -20,7 +22,16 @@ class Router {
     }
 
     public function parseUrl() {
-        $url = $_SERVER['QUERY_STRING'] ?? '';
+        $url = $_SERVER['REQUEST_URI'] ?? '';
+
+        // Remove the base path from the URL
+        if ($this->base_path && strpos($url, $this->base_path) === 0) {
+            $url = substr($url, strlen($this->base_path));
+        }
+
+        // Remove query string
+        $url_parts = explode('?', $url);
+        $url = $url_parts[0];
 
         // Check for custom route
         if (isset($this->routes[$url])) {

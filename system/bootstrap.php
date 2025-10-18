@@ -58,5 +58,17 @@ spl_autoload_register(function ($class) {
 
 // The autoloader will now handle loading the Router class
 
-// Create a new Router instance
-$router = new Router();
+// Determine the base path for the current application
+$base_path = '';
+if (defined('APPPATH')) {
+    $app_name = basename(rtrim(APPPATH, '/'));
+    $request_uri = $_SERVER['REQUEST_URI'];
+    $request_uri_parts = explode('?', $request_uri);
+    $path = $request_uri_parts[0];
+    if (strpos($path, '/' . $app_name) === 0) {
+        $base_path = '/' . $app_name;
+    }
+}
+
+// Create a new Router instance, passing the base path
+$router = new Router($base_path);

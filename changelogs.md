@@ -145,3 +145,6 @@
 - Refactored the authorization system from Role-Based to a more granular Permission-Based Access Control.
 - The attendance feature is now controlled by the `attendance.perform` permission.
 - **Router Refactoring:** Modified `router.php` to correctly handle routing for sub-applications, ensuring proper loading of application-specific bootstrap and router logic.
+- **Router Class Refactoring:**
+    - Modified `system/bootstrap.php` to determine the application's base path and pass it to the `Router` constructor.
+    - Modified `system/core/Router.php` to accept the base path and use it to accurately parse URLs from `$_SERVER['REQUEST_URI']`, enabling correct routing for sub-application routes like `/installer`.
