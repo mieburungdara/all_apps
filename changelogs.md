@@ -98,6 +98,9 @@
 - Added API key authentication via Bearer token.
 - Added admin-only API endpoints for listing users (`/api/users`) and fetching a single user (`/api/user/{id}`).
 
+### Added
+- **Telegram Bot Notification System:** Implemented integration with Telegram bot for sending notifications.
+
 ### Changed
 - Improved flash message system to be more robust and consistently styled.
 - The `/api/user/{id}` endpoint now allows non-admin users to fetch their own data.
