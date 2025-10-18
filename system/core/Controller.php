@@ -32,8 +32,14 @@ class Controller {
     }
 
     protected function _auth_check() {
-        if (!$this->session->get('user_id')) {
-            $this->response->redirect('/sekolah/users/login');
+        $request_uri = $_SERVER['REQUEST_URI'];
+        $is_installer_route = strpos($request_uri, '/sekolah/installer') !== false;
+
+        // Only perform auth check if the application is installed AND not on the installer route
+        if (file_exists(APPPATH . 'installed.lock') && !$is_installer_route) {
+            if (!$this->session->get('user_id')) {
+                $this->response->redirect('/sekolah/users/login');
+            }
         }
     }
 

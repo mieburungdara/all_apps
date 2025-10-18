@@ -1,7 +1,3 @@
-<?php
-$session = new Session();
-$user = (new Users_model())->get_user_by_id($session->get('user_id'));
-?>
 <!doctype html>
 <html lang="en">
   <head>

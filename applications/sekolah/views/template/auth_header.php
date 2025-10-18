@@ -1,6 +1,3 @@
-<?php
-$session = new Session();
-?>
 <!doctype html>
 <html lang="en">
   <head>

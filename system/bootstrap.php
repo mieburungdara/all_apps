@@ -23,12 +23,14 @@ set_error_handler(function($severity, $message, $file, $line) {
     return true; // Don't execute PHP internal error handler
 });
 
-// Redirect to installer if not installed
-// Exclude installer and login routes from this check to prevent redirect loops
+// If the application is not installed, redirect to the installer,
+// unless the current request is already for the installer or login page.
 $request_uri = $_SERVER['REQUEST_URI'];
 $is_installer_route = strpos($request_uri, '/sekolah/installer') !== false;
 $is_login_route = strpos($request_uri, '/sekolah/users/login') !== false;
 
+
+// If not installed AND not on installer route AND not on login route, then redirect to installer
 if (!file_exists(APPPATH . 'installed.lock') && !$is_installer_route && !$is_login_route) {
     header('Location: /sekolah/installer');
     exit;

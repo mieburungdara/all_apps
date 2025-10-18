@@ -161,5 +161,12 @@
 - **Fix:** Loaded `input` library in `system/core/Controller.php` constructor to prevent "Call to a member function method() on null" error.
 - **Fix:** Modified `system/bootstrap.php` to exclude installer and login routes from the `installed.lock` check, preventing redirect loops.
 - **Fix:** Corrected `system/core/Loader.php` to access `module_path` property directly from Controller instance instead of calling a non-existent `getModulePath()` method.
-- **Debugging:** Added logging to `system/core/Loader.php` to trace model path and `file_exists()` result.
+- **Fix:** Modified `system/core/Controller.php` to prevent redirection to login if the request is for the installer route.
+- **Added:** Created `applications/sekolah/modules/installer/controllers/Installer.php` (Installer controller).
+- **Fix:** Corrected the view path in `Installer::index()` method to 'index' instead of 'installer/index'.
+- **Added:** Created `applications/sekolah/modules/installer/views/index.php` (Installer view).
+- **Fix:** Modified `router.php` to include font file extensions in the static file serving regex.
+- **Refactor:** Removed debug logging from `system/core/Loader.php`.
+- **Refactor:** Removed debug logging from `system/bootstrap.php`.
+- **Refactor:** Removed debug logging from `applications/sekolah/modules/installer/controllers/Installer.php`.
 - **Fix:** Modified `system/core/Loader.php` to accept `module_path` in its constructor, store it, and use it in the `model()` method for correct model path resolution.

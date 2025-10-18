@@ -23,7 +23,7 @@ class Users extends Controller {
             $this->_handle_login();
         }
         $data['title'] = 'Login';
-        $this->load->view('users/login', $data, 'auth');
+        $this->load->view('login', $data, 'auth');
     }
 
     private function _handle_login() {
