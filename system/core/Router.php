@@ -42,10 +42,9 @@ class Router {
         $url = filter_var($url, FILTER_SANITIZE_URL);
         $segments = explode('/', $url);
 
-            if (!empty($segments[0])) {
-                $this->module = $segments[0];
-                $this->controller = ucfirst($segments[0]);
-            }
+        if (!empty($segments[0])) {
+            $this->module = $segments[0];
+            $this->controller = ucfirst($segments[0]);
 
             if (!empty($segments[1])) {
                 $this->method = $segments[1];
@@ -54,7 +53,7 @@ class Router {
             if (!empty(array_slice($segments, 2))) {
                 $this->params = array_slice($segments, 2);
             }
-        } // This closes the if (!empty($segments[0])) block
+        }
     } // This closes the parseUrl() method
 
     public function dispatch() {

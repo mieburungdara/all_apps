@@ -154,4 +154,4 @@
 - **Debugging:** Removed logging from `system/bootstrap.php`.
 - **Debugging:** Created `test.php` in the root directory to verify PHP execution.
 - **Fix:** Removed redundant Composer autoloader inclusion from `system/bootstrap.php` to resolve "Failed opening required" error.
-- **Fix:** Corrected syntax error in `system/core/Router.php` (missing closing brace in `parseUrl()` method).
+- **Fix:** Corrected syntax error in `system/core/Router.php` (incorrect nesting of if blocks and extra closing brace in `parseUrl()` method).
