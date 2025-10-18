@@ -10,23 +10,20 @@ class Installer extends Controller {
     public function index() {
         $data['title'] = 'Installer';
         $data['php_version'] = phpversion();
-        $data['pdo_enabled'] = extension_loaded('pdo_sqlite');
         $this->load->view('install/welcome', $data, 'auth');
     }
 
     public function database() {
         if ($this->input->method() == 'POST') {
+            $host = $this->input->post('db_host');
+            $port = $this->input->post('db_port');
             $db_name = $this->input->post('db_name');
-            $db_path = APPPATH . 'database/' . $db_name . '.sqlite';
+            $username = $this->input->post('db_username');
+            $password = $this->input->post('db_password');
 
-            try {
-                new PDO('sqlite:' . $db_path);
-                $config_content = "<?php\n\nreturn [\n    'path' => '{$db_path}',\n];\n";
-                file_put_contents(APPPATH . 'config/database.php', $config_content);
-                $this->response->redirect('/sekolah/installer/run_migration');
-            } catch (Exception $e) {
-                $this->session->set_flash('error', 'Could not create database: ' . $e->getMessage());
-            }
+            $config_content = "<?php\n\nreturn [\n    'driver'    => 'mysql',\n    'host'      => '{$host}',\n    'port'      => '{$port}',\n    'database'  => '{$db_name}',\n    'username'  => '{$username}',\n    'password'  => '{$password}',\n];\n";
+            file_put_contents(APPPATH . 'config/database.php', $config_content);
+            $this->response->redirect('/sekolah/installer/run_migration');
         }
         $data['title'] = 'Database Setup';
         $this->load->view('install/database', $data, 'auth');
