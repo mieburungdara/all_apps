@@ -158,3 +158,4 @@
 - **Fix:** Loaded `session` and `response` libraries in `system/core/Controller.php` constructor to prevent "Call to a member function get() on null" error during authentication checks.
 - **Fix:** Removed redundant `get_old_input()` and `flash_input()` methods from `system/core/Session.php` to resolve "Cannot redeclare Session::get_old_input()" error.
 - **Fix:** Assigned loaded `session` and `response` library instances to controller properties in `system/core/Controller.php` constructor to prevent "Call to a member function get() on null" error.
+- **Fix:** Modified `system/bootstrap.php` to exclude installer and login routes from the `installed.lock` check, preventing redirect loops.

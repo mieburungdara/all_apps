@@ -24,7 +24,12 @@ set_error_handler(function($severity, $message, $file, $line) {
 });
 
 // Redirect to installer if not installed
-if (!file_exists(APPPATH . 'installed.lock') && strpos($_SERVER['REQUEST_URI'], '/install') === false) {
+// Exclude installer and login routes from this check to prevent redirect loops
+$request_uri = $_SERVER['REQUEST_URI'];
+$is_installer_route = strpos($request_uri, '/sekolah/installer') !== false;
+$is_login_route = strpos($request_uri, '/sekolah/users/login') !== false;
+
+if (!file_exists(APPPATH . 'installed.lock') && !$is_installer_route && !$is_login_route) {
     header('Location: /sekolah/installer');
     exit;
 }
