@@ -173,9 +173,8 @@ class Installer extends Controller {
                 $this->response->redirect('/sekolah/users/login');
 
             } catch (Exception $e) {
-                echo "<pre>INSTALLATION FAILED:\n";
-                print_r($e);
-                die();
+                $this->session->set_flash('error', 'An error occurred during final installation: ' . $e->getMessage());
+                $this->response->redirect('/sekolah/installer?step=5');
             }
             return;
         }
