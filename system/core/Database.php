@@ -10,7 +10,7 @@ class Database {
         $db_config = $config->load('database');
 
         if ($db_config['driver'] === 'mysql') {
-            $dsn = 'mysql:host=' . $db_config['host'] . ';dbname=' . $db_config['database'];
+            $dsn = 'mysql:host=' . $db_config['host'] . ';port=' . ($db_config['port'] ?? 3306) . ';dbname=' . $db_config['database'];
             $user = $db_config['username'];
             $pass = $db_config['password'];
             $options = [
@@ -18,6 +18,9 @@ class Database {
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
             ];
             try {
+                if (!in_array('mysql', PDO::getAvailableDrivers())) {
+                    throw new \PDOException('MySQL PDO driver not found or not enabled.');
+                }
                 $this->db = new PDO($dsn, $user, $pass, $options);
             } catch (\PDOException $e) {
                 throw new \PDOException($e->getMessage(), (int)$e->getCode());

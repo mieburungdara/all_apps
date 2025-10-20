@@ -1,9 +1,13 @@
 <?php
 // router.php
+
+// Define the front controller path
+define('FCPATH', __DIR__ . '/');
+
 error_log("DEBUG: router.php executed.", 3, __DIR__ . '/php_server.log');
 
 // Serve static files directly if they exist
-if (preg_match('/\.(?:png|jpg|jpeg|gif|css|js|ico|woff2|woff|ttf|eot|svg)$/', $_SERVER["REQUEST_URI"])) {
+if (preg_match('/\.(?:png|jpg|jpeg|gif|css|js|ico|woff2|woff|ttf|eot|svg)$/', $_SERVER["REQUEST_URI"]) || $_SERVER["REQUEST_URI"] === '/phpinfo.php') {
     return false;
 }
 

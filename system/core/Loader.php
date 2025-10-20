@@ -69,17 +69,24 @@ class Loader {
     }
 
     public function model($model_name) {
-        $CI =& Controller::get_instance(); // Still need CI for assigning the model to it
-        $model_path = $this->module_path . 'models/' . $model_name . '.php'; // Use Loader's module_path
+        $CI =& Controller::get_instance();
 
-        error_log("DEBUG: Loader::model() checking path: {$model_path}", 3, __DIR__ . '/../../php_server.log');
-        $file_exists_result = file_exists($model_path);
-        error_log("DEBUG: file_exists({$model_path}) returned: " . ($file_exists_result ? 'true' : 'false'), 3, __DIR__ . '/../../php_server.log');
+        $model_file_name = basename($model_name);
 
+        if (strpos($model_name, '/') !== false) {
+            // Path includes module: 'module/model'
+            $path_parts = explode('/', $model_name);
+            $module = $path_parts[0];
+            $model_file_name = $path_parts[1];
+            $model_path = APPPATH . 'modules/' . $module . '/models/' . $model_file_name . '.php';
+        } else {
+            // Load from the current module
+            $model_path = $this->module_path . 'models/' . $model_name . '.php';
+        }
 
-        if ($file_exists_result) {
+        if (file_exists($model_path)) {
             require_once $model_path;
-            $CI->$model_name = new $model_name();
+            $CI->$model_file_name = new $model_file_name();
         } else {
             show_error("Model file not found: {$model_path}");
         }
