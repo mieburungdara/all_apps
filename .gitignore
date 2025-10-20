@@ -1,2 +1,10 @@
 php_server.log
 applications/sekolah/config/database.php
+vendor/
+logs/
+applications/sekolah/config/google_auth.php
+dashmix.zip
+deploy.text
+applications/sekolah/installed.lock
+*.env
+*.log
