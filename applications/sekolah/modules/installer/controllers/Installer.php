@@ -121,6 +121,9 @@ class Installer extends Controller {
 
         if ($this->input->method() === 'POST') {
             try {
+                // Run migrations FIRST to ensure all tables exist
+                $migration_output = shell_exec("php " . FCPATH . "migrate.php sekolah");
+
                 // Manually connect to the database
                 $db_config = require APPPATH . 'config/database.php';
 
@@ -170,9 +173,8 @@ class Installer extends Controller {
                 $this->response->redirect('/sekolah/users/login');
 
             } catch (Exception $e) {
-                echo "<pre>INSTALLATION FAILED:\n";
-                print_r($e);
-                die();
+                $this->session->set_flash('error', 'An error occurred during final installation: ' . $e->getMessage());
+                $this->response->redirect('/sekolah/installer?step=5');
             }
             return;
         }
