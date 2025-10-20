@@ -21,13 +21,11 @@ if (!function_exists('shell_exec') || in_array('shell_exec', array_map('trim', e
     $test_output = shell_exec('echo "Shell exec is enabled!"');
     file_put_contents("deploy.text", date('Y-m-d H:i:s') . " - Test: " . $test_output . "\n", FILE_APPEND);
 
-    // Jalankan perintah git pull
-    // Ganti <YOUR_GITHUB_USERNAME> dengan username GitHub Anda
-    // Ganti <YOUR_PERSONAL_ACCESS_TOKEN> dengan token yang Anda buat
-    // Ganti <YOUR_REPO_NAME> dengan nama repositori Anda (misal: mieburungdara/all_apps)
-    $github_repo_url = "https://mieburungdara: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@github.com/mieburungdara/all_apps.git";
-    $output = shell_exec('cd /home/u1574101/public_html/mymy.my.id && git pull ' . $github_repo_url . ' 2>&1');
-    // Simpan log ke file
+    // Jalankan perintah git pull menggunakan SSH
+    // Anda perlu menyiapkan SSH Key di server hosting dan menambahkannya sebagai Deploy Key di GitHub.
+    // Ganti <YOUR_SSH_REPO_URL> dengan URL SSH repositori Anda (misal: git@github.com:mieburungdara/all_apps.git)
+    $ssh_repo_url = "git@github.com:mieburungdara/all_apps.git"; // Contoh URL SSH
+    $output = shell_exec('cd /home/u1574101/public_html/mymy.my.id && git pull ' . $ssh_repo_url . ' 2>&1');    // Simpan log ke file
     file_put_contents("deploy.text", date('Y-m-d H:i:s') . " - " . $output . "\n", FILE_APPEND);
 
     $message = "✅ Deploy sukses!\nRepo: *$repoName*\nWaktu: $time\n\nHasil:\n`$output`";
