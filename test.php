@@ -1,1 +1,1 @@
-<?php echo "Test successful!"; ?>
+<?php echo "Hello from Project Root!"; ?>
