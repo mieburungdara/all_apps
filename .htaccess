@@ -1,6 +1,9 @@
 RewriteEngine On
 RewriteBase /
 
+# Exclude githook.php from rewrite rules
+RewriteRule ^githook.php$ - [L]
+
 # Redirect all requests to router.php unless they are for existing files or directories
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
